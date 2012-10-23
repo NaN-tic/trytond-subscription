@@ -43,12 +43,11 @@ copyright notices and license terms. -->
                     <form string="Subscription Document" col="6">
                         <label name="name"/>
                         <field name="name" xexpand="1"/>
-                        <label name="active"/>
-                        <field name="active" xexpand="0" width="100"/>
                         <label name="model"/>
-                        <field name="model"/>
-                        <label name="fields"/>
-                        <field name="fields"/>
+                        <field name="model" xexpand="1"/>
+                        <label name="active"/>
+                        <field name="active" xexpand="0" width="50"/>
+                        <field name="fields" colspan="6"/>
                     </form>
                     ]]>
             </field>
@@ -71,7 +70,7 @@ copyright notices and license terms. -->
             <field name="act_window" ref="act_subscription_document"/>
         </record>
 
-        <menuitem name="Subscriptions"
+        <menuitem name="Documents"
             parent="menu_main_subscription"
             sequence="1" id="menu_subscription_document"
             action="act_subscription_document"/>
@@ -101,9 +100,9 @@ copyright notices and license terms. -->
             <field name="arch" type="xml">
                 <![CDATA[
                     <tree string="Document Fields">
+                        <field name="field"/>
                         <field name="value"/>
                         <field name="document"/>
-                        <field name="field"/>
                     </tree>
                     ]]>
             </field>
@@ -115,12 +114,12 @@ copyright notices and license terms. -->
             <field name="arch" type="xml">
                 <![CDATA[
                     <form string="Document Field" col="6">
+                        <label name="field"/>
+                        <field name="field"/>
                         <label name="value"/>
                         <field name="value"/>
                         <label name="document"/>
                         <field name="document"/>
-                        <label name="field"/>
-                        <field name="field"/>
                     </form>
                     ]]>
             </field>
@@ -143,7 +142,7 @@ copyright notices and license terms. -->
             <field name="act_window" ref="act_subscription_document_field"/>
         </record>
 
-        <menuitem name="Subscriptions"
+        <menuitem name="Document Fields"
             parent="menu_main_subscription"
             sequence="1" id="menu_subscription_document_field"
             action="act_subscription_document_field"/>
@@ -172,16 +171,17 @@ copyright notices and license terms. -->
             <field name="type">tree</field>
             <field name="arch" type="xml">
                 <![CDATA[
-                    <tree string="Subscription documents">
+                    <tree string="Subscriptions">
                         <field name="name"/>
-                        <field name="active"/>
                         <field name="user"/>
+                        <field name="request_user"/>
                         <field name="interval"/>
                         <field name="interval_type"/>
                         <field name="exec_init"/>
                         <field name="date_init"/>
                         <field name="state"/>
                         <field name="cron"/>
+                        <field name="active"/>
                     </tree>
                     ]]>
             </field>
@@ -192,31 +192,59 @@ copyright notices and license terms. -->
             <field name="type">form</field>
             <field name="arch" type="xml">
                 <![CDATA[
-                    <form string="Subscription document" col="6">
+                    <form string="Subscription" col="6">
                         <label name="name"/>
-                        <field name="name"/>
-                        <label name="active"/>
-                        <field name="active"/>
+                        <field name="name" xexpand="1"/>
+                        <label name="party"/>
+                        <field name="party" xexpand="1"/>
+                        <newline/>
                         <label name="user"/>
-                        <field name="user"/>
-                        <label name="interval"/>
-                        <field name="interval"/>
-                        <label name="interval_type"/>
-                        <field name="interval_type"/>
-                        <label name="exec_init"/>
-                        <field name="exec_init"/>
-                        <label name="date_init"/>
-                        <field name="date_init"/>
-                        <label name="state"/>
-                        <field name="state"/>
-                        <label name="doc_lines"/>
-                        <field name="doc_lines"/>
-                        <label name="cron"/>
-                        <field name="cron"/>
-                        <label name="notes"/>
-                        <field name="notes"/>
-                        <label name="note"/>
-                        <field name="note"/>
+                        <field name="user" xexpand="1"/>
+                        <label name="request_user"/>
+                        <field name="request_user" xexpand="1"/>
+                        <label name="active"/>
+                        <field name="active" xexpand="0"/>
+                        <notebook colspan="6">
+                            <page string="Subsription Data"
+                                    id="subsription_data" col="6">
+                                <label name="interval_type"/>
+                                <field name="interval_type" colspan="5"/>
+                                <label name="interval"/>
+                                <field name="interval"/>
+                                <label name="exec_init"/>
+                                <field name="exec_init"/>
+                                <label name="date_init"/>
+                                <field name="date_init"/>
+                                <label name="doc_source"/>
+                                <field name="doc_source" colspan="5"/>
+                                <separator string="Notes" id="notes_separator"
+                                        colspan="3"/>
+                                <field name="notes" colspan="6"/>
+                                <label name="cron"/>
+                                <field name="cron" colspan="5"/>
+                                <label name="state"/>
+                                <field name="state"/>
+                                <group col="3" colspan="4"
+                                        id="subscriptions_buttons">
+                                    <button name="set_process"
+                                        string="Process"
+                                        icon="tryton-go-next"/>
+                                    <button name="set_done"
+                                        string="Stop"
+                                        icon="tryton-cancel"/>
+                                    <button name="set_draft"
+                                        string="Set to Draft"
+                                        icon="tryton-ok"/>
+                                </group>
+                            </page>
+                            <page string="Documents Created"
+                                    id="documents_created">
+                                <field name="doc_lines" colspan="4"/>
+                            </page>
+                            <page string="Notes" id="notes">
+                                <field name="note" colspan="4"/>
+                            </page>
+                        </notebook>
                     </form>
                     ]]>
             </field>
@@ -268,7 +296,7 @@ copyright notices and license terms. -->
             <field name="type">tree</field>
             <field name="arch" type="xml">
                 <![CDATA[
-                    <tree string="Subscription documents">
+                    <tree string="Subscription Histories">
                         <field name="date"/>
                         <field name="document"/>
                         <field name="subscription"/>
@@ -282,7 +310,7 @@ copyright notices and license terms. -->
             <field name="type">form</field>
             <field name="arch" type="xml">
                 <![CDATA[
-                    <form string="Subscription document" col="6">
+                    <form string="Subscription History" col="6">
                         <label name="date"/>
                         <field name="date"/>
                         <label name="document"/>
@@ -295,7 +323,7 @@ copyright notices and license terms. -->
         </record>
 
         <record model="ir.action.act_window" id="act_subscription_subscription_history">
-            <field name="name">Subscriptions</field>
+            <field name="name">History</field>
             <field name="res_model">subscription.subscription.history</field>
         </record>
 
@@ -311,7 +339,7 @@ copyright notices and license terms. -->
             <field name="act_window" ref="act_subscription_subscription_history"/>
         </record>
 
-        <menuitem name="Subscriptions"
+        <menuitem name="Histories"
             parent="menu_main_subscription"
             sequence="1" id="menu_subscription_subscription_history"
             action="act_subscription_subscription_history"/>
