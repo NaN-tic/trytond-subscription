@@ -93,6 +93,9 @@ copyright notices and license terms. -->
                             <page string="Computed Fields" id="computed_lines">
                                 <field name="lines" colspan="4"/>
                             </page>
+                            <page string="History" id="notes">
+                                <field name="history" colspan="4"/>
+                            </page>
                             <page string="Notes" id="notes">
                                 <field name="note" colspan="4"/>
                             </page>
@@ -200,6 +203,78 @@ copyright notices and license terms. -->
 
         <record model="ir.model.access" id="access_subscription_line_admin">
             <field name="model" search="[('model', '=', 'subscription.line')]"/>
+            <field name="group" ref="group_subscription_admin"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_delete" eval="True"/>
+        </record>
+
+
+<!-- subscription.history -->
+        <record model="ir.ui.view" id="subscription_history_view_tree">
+            <field name="model">subscription.history</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <![CDATA[
+                    <tree string="Subscription History">
+                        <field name="date"/>
+                        <field name="document"/>
+                        <field name="subscription"/>
+                    </tree>
+                    ]]>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="subscription_history_view_form">
+            <field name="model">subscription.history</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <![CDATA[
+                    <form string="Subscription History" col="6">
+                        <label name="date"/>
+                        <field name="date"/>
+                        <label name="document"/>
+                        <field name="document"/>
+                        <label name="subscription"/>
+                        <field name="subscription"/>
+                    </form>
+                    ]]>
+            </field>
+        </record>
+
+        <record model="ir.action.act_window" id="act_subscription_history">
+            <field name="name">History</field>
+            <field name="res_model">subscription.history</field>
+        </record>
+
+        <record model="ir.action.act_window.view" id="act_subscription_history_tree_view">
+            <field name="sequence" eval="10"/>
+            <field name="view" ref="subscription_history_view_tree"/>
+            <field name="act_window" ref="act_subscription_history"/>
+        </record>
+
+        <record model="ir.action.act_window.view" id="act_subscription_history_form_view">
+            <field name="sequence" eval="20"/>
+            <field name="view" ref="subscription_history_view_form"/>
+            <field name="act_window" ref="act_subscription_history"/>
+        </record>
+
+        <menuitem name="History"
+            parent="menu_main_subscription"
+            sequence="1" id="menu_subscription_history"
+            action="act_subscription_history"/>
+
+        <record model="ir.model.access" id="access_subscription_history">
+            <field name="model" search="[('model', '=', 'subscription.history')]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="False"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_delete" eval="False"/>
+        </record>
+
+        <record model="ir.model.access" id="access_subscription_history_admin">
+            <field name="model" search="[('model', '=', 'subscription.history')]"/>
             <field name="group" ref="group_subscription_admin"/>
             <field name="perm_read" eval="True"/>
             <field name="perm_write" eval="True"/>

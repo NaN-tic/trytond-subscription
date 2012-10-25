@@ -12,6 +12,7 @@ import logging
 __all__ = [
     'SubscriptionSubscription',
     'SubscriptionLine',
+    'SubscriptionHistory',
 ]
 
 STATES = {
@@ -53,6 +54,8 @@ class SubscriptionSubscription(ModelSQL, ModelView):
             help='User can choose the source model on which he wants to ' \
                 'create models.')
     lines = fields.One2Many('subscription.line', 'subscription', 'Lines')
+    history = fields.One2Many('subscription.history',
+            'subscription', 'History')
     cron = fields.Many2One('ir.cron', 'Cron Job', 
             help='Scheduler which runs on subscription.', ondelete='CASCADE')
     note = fields.Text('Notes', help='Description or Summary of Subscription.')
@@ -260,4 +263,16 @@ class SubscriptionLine(ModelSQL, ModelView):
             'As an example to get the current date:\n\n' \
             'result = pool.get(\'ir.date\').today()')
 
+
+class SubscriptionHistory(ModelSQL, ModelView):
+    "Subscription History"
+    __name__ = "subscription.history"
+    _rec_name = 'date'
+
+    date = fields.DateTime('First Date')
+    subscription = fields.Many2One('subscription.subscription',
+            'Subscription', ondelete='CASCADE')
+    document = fields.Reference('Source Document', selection=[
+            ('account.invoice', 'Invoice'),
+            ('sale.sale', 'Sale Order')], required=True)
 

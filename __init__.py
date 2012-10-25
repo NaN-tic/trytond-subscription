@@ -10,4 +10,5 @@ def register():
     Pool.register(
         SubscriptionSubscription,
         SubscriptionLine,
+        SubscriptionHistory,
         module='subscription', type_='model')
