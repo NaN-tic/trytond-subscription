@@ -178,12 +178,9 @@ class SubscriptionSubscription(ModelSQL, ModelView):
 
     @classmethod
     def model_copy(cls, subscription_id=None):
-
-
         Cron = Pool().get('ir.cron')
+        History = Pool().get('subscription.history')
         subscription = cls(subscription_id)
-
-
         logger = logging.getLogger('subscription_subscription')
         remaining = Cron.browse([subscription.cron.id])[0].number_calls
         model_id = subscription.model_source and subscription.model_source.id \
@@ -214,7 +211,23 @@ class SubscriptionSubscription(ModelSQL, ModelView):
                         return None
                     default[line.field.name] = localspace['result'] \
                             if 'result' in localspace else False
-            model_id = Model.copy([subscription.model_source], default)
+            try:
+                model_id = Model.copy([subscription.model_source], default)
+            except:
+                vals = {
+                    'log': str('Error creating document %s. See logs for ' \
+                            'more information.' % \
+                            subscription.model_source.__name__),
+                    'subscription': subscription,
+                }
+            else:
+                vals = {
+                    'log': 'Document %s created successfully.' % \
+                            subscription.model_source.__name__,
+                    'subscription': subscription.id,
+#                    'model': (subscription.model_source.__name__, model_id),
+                }
+            History.create(vals)
             if remaining == 1:
                 subscription.write([subscription.id], {'state': 'done'})
         else:
@@ -269,10 +282,16 @@ class SubscriptionHistory(ModelSQL, ModelView):
     __name__ = "subscription.history"
     _rec_name = 'date'
 
-    date = fields.DateTime('First Date')
+    date = fields.DateTime('Date')
+    subscription = fields.Many2One('subscription.subscription',
+            'Subscription')
+    log = fields.Char('Result')
     subscription = fields.Many2One('subscription.subscription',
             'Subscription', ondelete='CASCADE')
-    document = fields.Reference('Source Document', selection=[
-            ('account.invoice', 'Invoice'),
-            ('sale.sale', 'Sale Order')], required=True)
+#    document = fields.Reference('Source Document', selection=[],
+#            readonly=True)
+
+    @staticmethod
+    def default_date():
+        return datetime.now()
 
