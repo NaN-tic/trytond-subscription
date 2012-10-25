@@ -229,7 +229,7 @@ class SubscriptionSubscription(ModelSQL, ModelView):
                 }
             History.create(vals)
             if remaining == 1:
-                subscription.write([subscription.id], {'state': 'done'})
+                subscription.write([subscription], {'state': 'done'})
         else:
             logger.error('Document in subscription %s not found.\n' % \
                          subscription.name)
@@ -244,7 +244,7 @@ class SubscriptionSubscription(ModelSQL, ModelView):
     @classmethod
     @ModelView.button
     def set_draft(self, subscriptions):
-        self.write([self], {'state':'draft'})
+        self.write(subscriptions, {'state':'draft'})
 
 
 class SubscriptionLine(ModelSQL, ModelView):
