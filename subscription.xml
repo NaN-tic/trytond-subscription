@@ -148,8 +148,8 @@ copyright notices and license terms. -->
             <field name="arch" type="xml">
                 <![CDATA[
                     <tree string="Fields">
-                        <field name="name"/>
-                        <field name="subscription"/>
+                        <field name="field"/>
+                        <field name="value"/>
                     </tree>
                     ]]>
             </field>
@@ -161,8 +161,8 @@ copyright notices and license terms. -->
             <field name="arch" type="xml">
                 <![CDATA[
                     <form string="Field" col="6">
-                        <label name="name"/>
-                        <field name="name"/>
+                        <label name="field"/>
+                        <field name="field"/>
                         <label name="subscription"/>
                         <field name="subscription"/>
                         <separator string="Value" id="value"
@@ -189,11 +189,6 @@ copyright notices and license terms. -->
             <field name="view" ref="subscription_line_view_form"/>
             <field name="act_window" ref="act_subscription_line"/>
         </record>
-
-        <menuitem name="Fields"
-            parent="menu_main_subscription"
-            sequence="1" id="menu_subscription_line"
-            action="act_subscription_line"/>
 
         <record model="ir.model.access" id="access_subscription_line">
             <field name="model" search="[('model', '=', 'subscription.line')]"/>
