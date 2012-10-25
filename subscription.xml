@@ -20,152 +20,7 @@ copyright notices and license terms. -->
         <menuitem name="Subscription" id="menu_main_subscription"
                 parent="ir.menu_administration"/>
 
-    <!-- subscription.document -->
-        <record model="ir.ui.view" id="subscription_document_view_tree">
-            <field name="model">subscription.document</field>
-            <field name="type">tree</field>
-            <field name="arch" type="xml">
-                <![CDATA[
-                    <tree string="Subscription Documents">
-                        <field name="name"/>
-                        <field name="active"/>
-                        <field name="model"/>
-                    </tree>
-                    ]]>
-            </field>
-        </record>
-
-        <record model="ir.ui.view" id="subscription_document_view_form">
-            <field name="model">subscription.document</field>
-            <field name="type">form</field>
-            <field name="arch" type="xml">
-                <![CDATA[
-                    <form string="Subscription Document" col="6">
-                        <label name="name"/>
-                        <field name="name" xexpand="1"/>
-                        <label name="model"/>
-                        <field name="model" xexpand="1"/>
-                        <label name="active"/>
-                        <field name="active" xexpand="0" width="50"/>
-                        <field name="fields" colspan="6"/>
-                    </form>
-                    ]]>
-            </field>
-        </record>
-
-        <record model="ir.action.act_window" id="act_subscription_document">
-            <field name="name">Documents</field>
-            <field name="res_model">subscription.document</field>
-        </record>
-
-        <record model="ir.action.act_window.view" id="act_subscription_document_tree_view">
-            <field name="sequence" eval="10"/>
-            <field name="view" ref="subscription_document_view_tree"/>
-            <field name="act_window" ref="act_subscription_document"/>
-        </record>
-
-        <record model="ir.action.act_window.view" id="act_subscription_document_form_view">
-            <field name="sequence" eval="20"/>
-            <field name="view" ref="subscription_document_view_form"/>
-            <field name="act_window" ref="act_subscription_document"/>
-        </record>
-
-        <menuitem name="Documents"
-            parent="menu_main_subscription"
-            sequence="1" id="menu_subscription_document"
-            action="act_subscription_document"/>
-
-        <record model="ir.model.access" id="access_subscription_document">
-            <field name="model" search="[('model', '=', 'subscription.document')]"/>
-            <field name="perm_read" eval="True"/>
-            <field name="perm_write" eval="False"/>
-            <field name="perm_create" eval="False"/>
-            <field name="perm_delete" eval="False"/>
-        </record>
-
-        <record model="ir.model.access" id="access_subscription_document_admin">
-            <field name="model" search="[('model', '=', 'subscription.document')]"/>
-            <field name="group" ref="group_subscription_admin"/>
-            <field name="perm_read" eval="True"/>
-            <field name="perm_write" eval="True"/>
-            <field name="perm_create" eval="True"/>
-            <field name="perm_delete" eval="True"/>
-        </record>
-
-
-    <!-- subscription.document.field -->
-        <record model="ir.ui.view" id="subscription_document_field_view_tree">
-            <field name="model">subscription.document.field</field>
-            <field name="type">tree</field>
-            <field name="arch" type="xml">
-                <![CDATA[
-                    <tree string="Document Fields">
-                        <field name="field"/>
-                        <field name="value"/>
-                        <field name="document"/>
-                    </tree>
-                    ]]>
-            </field>
-        </record>
-
-        <record model="ir.ui.view" id="subscription_document_field_view_form">
-            <field name="model">subscription.document.field</field>
-            <field name="type">form</field>
-            <field name="arch" type="xml">
-                <![CDATA[
-                    <form string="Document Field" col="6">
-                        <label name="field"/>
-                        <field name="field"/>
-                        <label name="value"/>
-                        <field name="value"/>
-                        <label name="document"/>
-                        <field name="document"/>
-                    </form>
-                    ]]>
-            </field>
-        </record>
-
-        <record model="ir.action.act_window" id="act_subscription_document_field">
-            <field name="name">Document Fields</field>
-            <field name="res_model">subscription.document.field</field>
-        </record>
-
-        <record model="ir.action.act_window.view" id="act_subscription_document_field_tree_view">
-            <field name="sequence" eval="10"/>
-            <field name="view" ref="subscription_document_field_view_tree"/>
-            <field name="act_window" ref="act_subscription_document_field"/>
-        </record>
-
-        <record model="ir.action.act_window.view" id="act_subscription_document_field_form_view">
-            <field name="sequence" eval="20"/>
-            <field name="view" ref="subscription_document_field_view_form"/>
-            <field name="act_window" ref="act_subscription_document_field"/>
-        </record>
-
-        <menuitem name="Document Fields"
-            parent="menu_main_subscription"
-            sequence="1" id="menu_subscription_document_field"
-            action="act_subscription_document_field"/>
-
-        <record model="ir.model.access" id="access_subscription_document_field">
-            <field name="model" search="[('model', '=', 'subscription.document.field')]"/>
-            <field name="perm_read" eval="True"/>
-            <field name="perm_write" eval="False"/>
-            <field name="perm_create" eval="False"/>
-            <field name="perm_delete" eval="False"/>
-        </record>
-
-        <record model="ir.model.access" id="access_subscription_document_field_admin">
-            <field name="model" search="[('model', '=', 'subscription.document.field')]"/>
-            <field name="group" ref="group_subscription_admin"/>
-            <field name="perm_read" eval="True"/>
-            <field name="perm_write" eval="True"/>
-            <field name="perm_create" eval="True"/>
-            <field name="perm_delete" eval="True"/>
-        </record>
-
-
-    <!-- subscription.subscription -->
+<!-- subscription.subscription -->
         <record model="ir.ui.view" id="subscription_subscription_view_tree">
             <field name="model">subscription.subscription</field>
             <field name="type">tree</field>
@@ -175,10 +30,11 @@ copyright notices and license terms. -->
                         <field name="name"/>
                         <field name="user"/>
                         <field name="request_user"/>
-                        <field name="interval"/>
+                        <field name="request_group"/>
+                        <field name="interval_number"/>
                         <field name="interval_type"/>
-                        <field name="exec_init"/>
-                        <field name="date_init"/>
+                        <field name="number_calls"/>
+                        <field name="next_call"/>
                         <field name="state"/>
                         <field name="cron"/>
                         <field name="active"/>
@@ -195,31 +51,28 @@ copyright notices and license terms. -->
                     <form string="Subscription" col="6">
                         <label name="name"/>
                         <field name="name" xexpand="1"/>
-                        <label name="party"/>
-                        <field name="party" xexpand="1"/>
+                        <label name="active"/>
+                        <field name="active" xexpand="0"/>
                         <newline/>
                         <label name="user"/>
                         <field name="user" xexpand="1"/>
                         <label name="request_user"/>
                         <field name="request_user" xexpand="1"/>
-                        <label name="active"/>
-                        <field name="active" xexpand="0"/>
+                        <label name="request_group"/>
+                        <field name="request_group" xexpand="1"/>
                         <notebook colspan="6">
                             <page string="Subsription Data"
                                     id="subsription_data" col="6">
                                 <label name="interval_type"/>
                                 <field name="interval_type" colspan="5"/>
-                                <label name="interval"/>
-                                <field name="interval"/>
-                                <label name="exec_init"/>
-                                <field name="exec_init"/>
-                                <label name="date_init"/>
-                                <field name="date_init"/>
-                                <label name="doc_source"/>
-                                <field name="doc_source" colspan="5"/>
-                                <separator string="Notes" id="notes_separator"
-                                        colspan="3"/>
-                                <field name="notes" colspan="6"/>
+                                <label name="interval_number"/>
+                                <field name="interval_number"/>
+                                <label name="number_calls"/>
+                                <field name="number_calls"/>
+                                <label name="next_call"/>
+                                <field name="next_call"/>
+                                <label name="model_source"/>
+                                <field name="model_source" colspan="5"/>
                                 <label name="cron"/>
                                 <field name="cron" colspan="5"/>
                                 <label name="state"/>
@@ -237,9 +90,8 @@ copyright notices and license terms. -->
                                         icon="tryton-ok"/>
                                 </group>
                             </page>
-                            <page string="Documents Created"
-                                    id="documents_created">
-                                <field name="doc_lines" colspan="4"/>
+                            <page string="Computed Fields" id="computed_lines">
+                                <field name="lines" colspan="4"/>
                             </page>
                             <page string="Notes" id="notes">
                                 <field name="note" colspan="4"/>
@@ -289,71 +141,70 @@ copyright notices and license terms. -->
             <field name="perm_delete" eval="True"/>
         </record>
 
-
-    <!-- subscription.subscription.history -->
-        <record model="ir.ui.view" id="subscription_subscription_history_view_tree">
-            <field name="model">subscription.subscription.history</field>
+<!-- subscription.line -->
+        <record model="ir.ui.view" id="subscription_line_view_tree">
+            <field name="model">subscription.line</field>
             <field name="type">tree</field>
             <field name="arch" type="xml">
                 <![CDATA[
-                    <tree string="Subscription Histories">
-                        <field name="date"/>
-                        <field name="document"/>
+                    <tree string="Fields">
+                        <field name="name"/>
                         <field name="subscription"/>
                     </tree>
                     ]]>
             </field>
         </record>
 
-        <record model="ir.ui.view" id="subscription_subscription_history_view_form">
-            <field name="model">subscription.subscription.history</field>
+        <record model="ir.ui.view" id="subscription_line_view_form">
+            <field name="model">subscription.line</field>
             <field name="type">form</field>
             <field name="arch" type="xml">
                 <![CDATA[
-                    <form string="Subscription History" col="6">
-                        <label name="date"/>
-                        <field name="date"/>
-                        <label name="document"/>
-                        <field name="document"/>
+                    <form string="Field" col="6">
+                        <label name="name"/>
+                        <field name="name"/>
                         <label name="subscription"/>
                         <field name="subscription"/>
+                        <separator string="Value" id="value"
+                                colspan="6"/>
+                        <field name="value" colspan="6"/>
                     </form>
                     ]]>
             </field>
         </record>
 
-        <record model="ir.action.act_window" id="act_subscription_subscription_history">
-            <field name="name">History</field>
-            <field name="res_model">subscription.subscription.history</field>
+        <record model="ir.action.act_window" id="act_subscription_line">
+            <field name="name">Fields</field>
+            <field name="res_model">subscription.line</field>
         </record>
 
-        <record model="ir.action.act_window.view" id="act_subscription_subscription_history_tree_view">
+        <record model="ir.action.act_window.view" id="act_subscription_line_tree_view">
             <field name="sequence" eval="10"/>
-            <field name="view" ref="subscription_subscription_history_view_tree"/>
-            <field name="act_window" ref="act_subscription_subscription_history"/>
+            <field name="view" ref="subscription_line_view_tree"/>
+            <field name="act_window" ref="act_subscription_line"/>
         </record>
 
-        <record model="ir.action.act_window.view" id="act_subscription_subscription_history_form_view">
+        <record model="ir.action.act_window.view" id="act_subscription_line_form_view">
             <field name="sequence" eval="20"/>
-            <field name="view" ref="subscription_subscription_history_view_form"/>
-            <field name="act_window" ref="act_subscription_subscription_history"/>
+            <field name="view" ref="subscription_line_view_form"/>
+            <field name="act_window" ref="act_subscription_line"/>
         </record>
 
-        <menuitem name="Histories"
+        <menuitem name="Fields"
             parent="menu_main_subscription"
-            sequence="1" id="menu_subscription_subscription_history"
-            action="act_subscription_subscription_history"/>
+            sequence="1" id="menu_subscription_line"
+            action="act_subscription_line"/>
 
-        <record model="ir.model.access" id="access_subscription_document_history">
-            <field name="model" search="[('model', '=', 'subscription.subscription.history')]"/>
+        <record model="ir.model.access" id="access_subscription_line">
+            <field name="model" search="[('model', '=', 'subscription.line')]"/>
             <field name="perm_read" eval="True"/>
             <field name="perm_write" eval="False"/>
             <field name="perm_create" eval="False"/>
             <field name="perm_delete" eval="False"/>
         </record>
 
-        <record model="ir.model.access" id="access_subscription_document_history_admin">
-            <field name="model" search="[('model', '=', 'subscription.subscription.history')]"/>
+        <record model="ir.model.access" id="access_subscription_line_admin">
+            <field name="model" search="[('model', '=', 'subscription.line')]"/>
             <field name="group" ref="group_subscription_admin"/>
             <field name="perm_read" eval="True"/>
             <field name="perm_write" eval="True"/>
