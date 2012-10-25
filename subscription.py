@@ -2,11 +2,12 @@
 # The COPYRIGHT file at the top level of this repository contains the full
 # copyright notices and license terms.
 
+from datetime import datetime
 from trytond.model import ModelView, ModelSQL, fields
 from trytond.pool import Pool
-from trytond.pyson import Eval
+from trytond.pyson import Eval, Get, Id
 from trytond.transaction import Transaction
-from datetime import datetime
+import logging
 
 __all__ = [
     'SubscriptionSubscription',
@@ -180,6 +181,7 @@ class SubscriptionSubscription(ModelSQL, ModelView):
         subscription = cls(subscription_id)
 
 
+        logger = logging.getLogger('subscription_subscription')
         remaining = Cron.browse([subscription.cron.id])[0].number_calls
         model_id = subscription.model_source and subscription.model_source.id \
                 or False
@@ -192,24 +194,22 @@ class SubscriptionSubscription(ModelSQL, ModelView):
                 'transaction': Transaction(),
             }
             for line in subscription.lines:
-                localspace['values'] = line.value
-                with Transaction().set_context(**context):
+                with Transaction().set_context():
                     try:
-                        exec field in localspace
+                        exec line.value in localspace
                     except SyntaxError, e:
-                        logger.error('Syntax Error in document %s field %s.\n'\
-                                'Error: %s' % (document.name, field.name, e))
-                        return False
+                        logger.error('Syntax Error in field %s.\n'\
+                                'Error: %s' % (line.field.name, e))
+                        return None
                     except NameError, e:
-                        logger.error('Syntax Error in document %s field %s.\n'\
-                                'Error: %s' % (document.name, field.name, e))
-                        return False
+                        logger.error('Syntax Error in field %s.\n'\
+                                'Error: %s' % (line.field.name, e))
+                        return None
                     except Exception, e:
-                        logger.error('Unkonwn Error in document %s field %s.'\
-                                '\nMessage: %s' % \
-                                (document.name, field.name, e))
-                        return False
-                    default[line] = localspace['result'] \
+                        logger.error('Unkonwn Error in field %s.'\
+                                '\nMessage: %s' % (line.field.name, e))
+                        return None
+                    default[line.field.name] = localspace['result'] \
                             if 'result' in localspace else False
             model_id = Model.copy([subscription.model_source], default)
             if remaining == 1:
@@ -234,17 +234,30 @@ class SubscriptionSubscription(ModelSQL, ModelView):
 class SubscriptionLine(ModelSQL, ModelView):
     'Subscription Line'
     __name__ = 'subscription.line'
+    _rec_name = 'field'
 
     subscription = fields.Many2One('subscription.subscription',
             'Subscription', ondelete='CASCADE', select=True)
-    name = fields.Many2One('ir.model.field', 'Field',
-            domain=[('model_source', '=',
-                     Eval('_parent_subscription', {}).get('model_source', 0))],
-            select=True, required=True)
+#    name = fields.Many2One('ir.model.field', 'Field',
+#            domain=[('model', '=',
+#                     Id(Eval('_parent_subscription', {}), 'model_source')
+#                )],
+#            select=True, required=True)
+    field = fields.Many2One('ir.model.field', 'Field',
+#        domain=[(
+#            'model', '=', Eval('_parent_subscription', {}).get('model_source')
+#        )],
+        select=True, required=True)
     value = fields.Char('Default Value', required=True,
         help='Default value is considered for field when new subscription ' \
-            'is generated. You must put here a Python expression that ' \
-            'returns a value into a variable called "result". The available ' \
-            'variables are self, pool, transaction.')
+            'is generated. You must put here a Python expression. The ' \
+            'available variables are:\n' \
+            '  - self: The current subcription object.\n' \
+            '  - pool: The store of the instances of models.\n' \
+            '  - transaction: That contains thread-local parameters of the ' \
+            'database transaction.\n' \
+            'You must return a value into a variable called "result".\n' \
+            'As an example to get the current date:\n\n' \
+            'result = map(__import__, [\'datetime\'])[0].datetime.now()')
 
 
