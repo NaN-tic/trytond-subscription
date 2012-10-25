@@ -1,5 +1,6 @@
-#This file is part of Tryton.  The COPYRIGHT file at the top level of
-#this repository contains the full copyright notices and license terms.
+# This file is part of subscription module of Tryton.
+# The COPYRIGHT file at the top level of this repository contains the full
+# copyright notices and license terms.
 
 from trytond.pool import Pool
 from .subscription import *
@@ -7,8 +8,6 @@ from .subscription import *
 
 def register():
     Pool.register(
-        SubscriptionDocument,
-        SubscriptionDocumentField,
         SubscriptionSubscription,
-        SubscriptionSubscriptionHistory,
+        SubscriptionLine,
         module='subscription', type_='model')
