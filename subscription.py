@@ -258,6 +258,6 @@ class SubscriptionLine(ModelSQL, ModelView):
             'database transaction.\n' \
             'You must return a value into a variable called "result".\n' \
             'As an example to get the current date:\n\n' \
-            'result = map(__import__, [\'datetime\'])[0].datetime.now()')
+            'result = pool.get(\'ir.date\').today()')
 
 
