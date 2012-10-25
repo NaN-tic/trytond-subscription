@@ -1,6 +1,6 @@
 # This file is part of subscription module of Tryton.
-# The COPYRIGHT file at the top level of this repository
-# contains the full copyright notices and license terms.
+# The COPYRIGHT file at the top level of this repository contains the full
+# copyright notices and license terms.
 
 from trytond.model import ModelView, ModelSQL, fields
 from trytond.pool import Pool
@@ -8,117 +8,80 @@ from trytond.pyson import Eval
 from trytond.transaction import Transaction
 from datetime import datetime
 
-__all__ = ['SubscriptionDocument',
-    'SubscriptionDocumentField',
+__all__ = [
     'SubscriptionSubscription',
-    'SubscriptionSubscriptionHistory',
+    'SubscriptionLine',
 ]
 
-
-class SubscriptionDocument(ModelSQL, ModelView):
-    "Subscription Document"
-    __name__ = "subscription.document"
-
-    name = fields.Char('Name', select=True, required=True)
-    active = fields.Boolean('Active', select=True,
-            help="If the active field is set to False, it will allow you to " \
-                "hide the subscription document without removing it.")
-    model = fields.Many2One('ir.model', 'Object', required=True)
-    fields = fields.One2Many('subscription.document.field', 'document',
-            'Fields')
-
-    @classmethod
-    def __setup__(cls):
-        super(SubscriptionDocument, cls).__setup__()
-        cls._error_messages.update({
-            'error': 'Error',
-            'error_writing_document':
-                'You can\'t modify the object linked to this document!\n' \
-                'Please, create another document instead!'
-        })
-
-    @staticmethod
-    def default_active():
-        return True
-
-    @classmethod
-    def write(cls, documents, vals):
-        if vals.has_key('model'):
-            cls.raise_user_error(error="error",
-                error_description="error_writing_document")
-        return super(SubscriptionDocument, cls).write(documents, vals)
-
-
-class SubscriptionDocumentField(ModelSQL, ModelView):
-    "Subscription Document Field"
-    __name__ = "subscription.document.field"
-    _rec_name = 'field'
-
-    document = fields.Many2One('subscription.document',
-            'Subscription Document', ondelete='CASCADE', select=True)
-    field = fields.Many2One('ir.model.field', 'Field',
-            domain=[('model', '=',
-                     Eval('_parent_document', {}).get('model', 0))],
-            select=True, required=True)
-    value = fields.Char('Default Value', required=True,
-        help="Default value is considered for field when new document is " \
-            "generated. You must put here a Python expression.")
-
+STATES = {
+    'readonly': ~Eval('state', 'running'),
+}
+DEPENDS = ['state']
 
 class SubscriptionSubscription(ModelSQL, ModelView):
-    "Subscription"
-    __name__ = "subscription.subscription"
+    'Subscription'
+    __name__ = 'subscription.subscription'
 
     name = fields.Char('Name', select=True, required=True, translate=True)
     user = fields.Many2One('res.user', 'User', required=True,
         domain=[('active', '=', False)])
     request_user = fields.Many2One(
         'res.user', 'Request User', required=True,
-        help="The user who will receive requests in case of failure")
+        help='The user who will receive requests in case of failure.')
+    request_group = fields.Many2One(
+        'res.group', 'Request Group',
+        help='The group who will receive requests in case of failure.')
     active = fields.Boolean('Active', select=True,
-            help="If the active field is set to False, it will allow you to " \
-                "hide the subscription document without removing it.")
-    party = fields.Many2One('party.party', 'Party')
-    interval = fields.Integer('Interval Qty')
+            help='If the active field is set to False, it will allow you to ' \
+                'hide the subscription without removing it.')
+    interval_number = fields.Integer('Interval Qty')
     interval_type = fields.Selection([
             ('days', 'Days'),
             ('weeks', 'Weeks'),
             ('months', 'Months'),
         ], 'Interval Unit')
-    exec_init = fields.Integer('Number of documents')
-    date_init = fields.DateTime('First Date')
+    number_calls = fields.Integer('Number of documents')
+    next_call = fields.DateTime('First Date')
     state = fields.Selection([
             ('draft','Draft'),
             ('running','Running'),
             ('done','Done')], 'State', readonly=True)
-    doc_source = fields.Reference('Source Document',
-            selection='get_document_types', depends=['state'],
+    model_source = fields.Reference('Source Document',
+            selection='get_model', depends=['state'],
             states={'readonly': Eval('state') == 'running'},
-            help='User can choose the source document on which he wants to create documents')
-    doc_lines = fields.One2Many('subscription.subscription.history',
-            'subscription', 'Documents created', readonly=True)
+            help='User can choose the source model on which he wants to ' \
+                'create models.')
+    lines = fields.One2Many('subscription.line', 'subscription', 'Lines')
     cron = fields.Many2One('ir.cron', 'Cron Job', 
-            help="Scheduler which runs on subscription")
-    notes = fields.Text('Notes')
-    note = fields.Text('Notes', help="Description or Summary of Subscription")
+            help='Scheduler which runs on subscription.', ondelete='CASCADE')
+    note = fields.Text('Notes', help='Description or Summary of Subscription.')
 
     @classmethod
     def __setup__(cls):
         super(SubscriptionSubscription, cls).__setup__()
         cls._buttons.update({
-                'set_process': {
-                    'invisible': Eval('state') != 'draft',
-                    },
-                'set_done': {
-                    'invisible': Eval('state') != 'running',
-                    },
-                'set_draft': {
-                    'invisible': Eval('state') != 'done',
-                    },
-                })
+            'set_process': {
+                'invisible': Eval('state') != 'draft',
+                },
+            'set_done': {
+                'invisible': Eval('state') != 'running',
+                },
+            'set_draft': {
+                'invisible': Eval('state') != 'done',
+                },
+            })
+        cls._error_messages.update({
+            'error': 'Error. Wrong Source Document',
+            'provide_another_source': 'Please provide another source ' \
+                'model.\nThis one does not exist!',
+            })
+        cls._sql_constraints = [
+            ('name_unique', 'UNIQUE(name)',
+             'The name of the subscription must be unique!')
+        ]
 
     @staticmethod
-    def default_date_init():
+    def default_next_call():
         return datetime.now()
 
     @staticmethod
@@ -139,7 +102,11 @@ class SubscriptionSubscription(ModelSQL, ModelView):
         return True
 
     @staticmethod
-    def default_interval():
+    def default_interval_number():
+        return 1
+
+    @staticmethod
+    def default_number_calls():
         return 1
 
     @staticmethod
@@ -147,76 +114,137 @@ class SubscriptionSubscription(ModelSQL, ModelView):
         return 'months'
 
     @staticmethod
-    def default_doc_source():
+    def default_model_source():
         return False
 
     @staticmethod
     def default_state():
         return 'draft'
-
+#
     @classmethod
-    def get_document_types(cls):
+    def get_model(cls):
         cr = Transaction().cursor
         cr.execute('''\
             SELECT
                 m.model,
-                s.name
+                m.name
             FROM
-                subscription_document s,
                 ir_model m
-            WHERE
-                s.model = m.id
             ORDER BY
-                s.name
+                m.name
         ''')
-        res = [('', '')]
-        for model, name in cr.fetchall():
-            res.append((model, name))
-        return res
+        return cr.fetchall()
 
-    def set_process(self):
-        values = {
-            'model': self.__name__,
-            'name': self.name,
-            'user': self.user.id,
-            'request_user': self.request_user.id,
-            'interval_number': self.interval,
-            'interval_type': self.interval_type,
-            'number_calls': self.exec_init or 0,
-            'next_call': self.date_init,
-            'args': repr([self.id]),
-            'function': 'model_copy',
-        }
-        Cron = Pool().get('ir.cron')
-        cron = Cron.create(values)
-        vals = {
-            'cron': cron,
-            'state': 'running',
-        }
-        self.write([self], vals)
-#        return True
-
-    def model_copy(self):
-        if self.cron:
+    @classmethod
+    @ModelView.button
+    def set_process(self, subscriptions):
+        for subscription in subscriptions:
+            prova = str([subscription])
+            prova2 = repr
+            vals = {
+                'model': subscription.__name__,
+                'name': subscription.name,
+                'user': subscription.user.id,
+                'request_user': subscription.request_user.id,
+                'interval_number': subscription.interval_number,
+                'interval_type': subscription.interval_type,
+                'number_calls': subscription.number_calls or 1,
+                'next_call': subscription.next_call,
+                'args': str([subscription.id]),
+                'function': 'model_copy',
+            }
             Cron = Pool().get('ir.cron')
-            remaining = Cron.browse([self.cron.id])[0].number_calls
+            domain = [
+                ('model', '=', subscription.__name__),
+                ('name', '=', subscription.name),
+                ('active', '=', False),
+            ]
+            cron = Cron.search([domain])
+            if not cron:
+                cron = Cron.create(vals)
+            else:
+                vals['active'] = True
+                Cron.write(cron, vals)
+                cron = cron[0]
+            vals = {
+                'cron': cron.id,
+                'state': 'running',
+            }
+            self.write([subscription], vals)
 
-    def set_done(self):
-        pass
-
-    def set_draft(self):
-        pass
+    @classmethod
+    def model_copy(cls, subscription_id=None):
 
 
-class SubscriptionSubscriptionHistory(ModelSQL, ModelView):
-    "Subscription History"
-    __name__ = "subscription.subscription.history"
-    _rec_name = 'date'
+        Cron = Pool().get('ir.cron')
+        subscription = cls(subscription_id)
 
-    date = fields.DateTime('First Date')
+
+        remaining = Cron.browse([subscription.cron.id])[0].number_calls
+        model_id = subscription.model_source and subscription.model_source.id \
+                or False
+        if model_id:
+            Model = Pool().get(subscription.model_source.__name__)
+            default = {'state':'draft'}
+            localspace = {
+                'self': subscription,
+                'pool': Pool(),
+                'transaction': Transaction(),
+            }
+            for line in subscription.lines:
+                localspace['values'] = line.value
+                with Transaction().set_context(**context):
+                    try:
+                        exec field in localspace
+                    except SyntaxError, e:
+                        logger.error('Syntax Error in document %s field %s.\n'\
+                                'Error: %s' % (document.name, field.name, e))
+                        return False
+                    except NameError, e:
+                        logger.error('Syntax Error in document %s field %s.\n'\
+                                'Error: %s' % (document.name, field.name, e))
+                        return False
+                    except Exception, e:
+                        logger.error('Unkonwn Error in document %s field %s.'\
+                                '\nMessage: %s' % \
+                                (document.name, field.name, e))
+                        return False
+                    default[line] = localspace['result'] \
+                            if 'result' in localspace else False
+            model_id = Model.copy([subscription.model_source], default)
+            if remaining == 1:
+                subscription.write([subscription.id], {'state': 'done'})
+        else:
+            logger.error('Document in subscription %s not found.\n' % \
+                         subscription.name)
+
+    @classmethod
+    @ModelView.button
+    def set_done(self, subscriptions):
+        for subscription in subscriptions:
+            Pool().get('ir.cron').write([subscription.cron], {'active': False})
+            self.write([subscription], {'state':'draft'})
+
+    @classmethod
+    @ModelView.button
+    def set_draft(self, subscriptions):
+        self.write([self], {'state':'draft'})
+
+
+class SubscriptionLine(ModelSQL, ModelView):
+    'Subscription Line'
+    __name__ = 'subscription.line'
+
     subscription = fields.Many2One('subscription.subscription',
-            'Subscription', ondelete='CASCADE')
-    document = fields.Reference('Source Document', selection=[
-            ('account.invoice', 'Invoice'),
-            ('sale.sale', 'Sale Order')], required=True)
-    
+            'Subscription', ondelete='CASCADE', select=True)
+    name = fields.Many2One('ir.model.field', 'Field',
+            domain=[('model_source', '=',
+                     Eval('_parent_subscription', {}).get('model_source', 0))],
+            select=True, required=True)
+    value = fields.Char('Default Value', required=True,
+        help='Default value is considered for field when new subscription ' \
+            'is generated. You must put here a Python expression that ' \
+            'returns a value into a variable called "result". The available ' \
+            'variables are self, pool, transaction.')
+
+
