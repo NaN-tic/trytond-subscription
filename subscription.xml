@@ -219,8 +219,8 @@ copyright notices and license terms. -->
                 <![CDATA[
                     <tree string="Subscription History">
                         <field name="date"/>
-                        <field name="document"/>
                         <field name="subscription"/>
+                        <field name="log"/>
                     </tree>
                     ]]>
             </field>
@@ -231,13 +231,13 @@ copyright notices and license terms. -->
             <field name="type">form</field>
             <field name="arch" type="xml">
                 <![CDATA[
-                    <form string="Subscription History" col="6">
+                    <form string="Subscription History" col="4">
                         <label name="date"/>
                         <field name="date"/>
-                        <label name="document"/>
-                        <field name="document"/>
                         <label name="subscription"/>
                         <field name="subscription"/>
+                        <label name="log"/>
+                        <field name="log" colspan="3"/>
                     </form>
                     ]]>
             </field>
