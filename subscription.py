@@ -330,9 +330,8 @@ class SubscriptionLine(ModelSQL, ModelView):
             '  - pool: The store of the instances of models.\n' \
             '  - transaction: That contains thread-local parameters of the ' \
             'database transaction.\n' \
-            'You must return a value into a variable called "result".\n' \
             'As an example to get the current date:\n\n' \
-            'result = pool.get(\'ir.date\').today()')
+            'pool.get(\'ir.date\').today()')
 
 
 class SubscriptionHistory(ModelSQL, ModelView):
