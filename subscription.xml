@@ -236,6 +236,9 @@ copyright notices and license terms. -->
                         <field name="date"/>
                         <label name="subscription"/>
                         <field name="subscription"/>
+                        <newline/>
+                        <label name="document"/>
+                        <field name="document" colspan="3"/>
                         <label name="log"/>
                         <field name="log" colspan="3"/>
                     </form>

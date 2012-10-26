@@ -128,7 +128,7 @@ class SubscriptionSubscription(ModelSQL, ModelView):
     @staticmethod
     def default_state():
         return 'draft'
-#
+
     @classmethod
     def get_model(cls):
         cr = Transaction().cursor
@@ -342,10 +342,23 @@ class SubscriptionHistory(ModelSQL, ModelView):
     log = fields.Char('Result', readonly=True)
     subscription = fields.Many2One('subscription.subscription',
             'Subscription', ondelete='CASCADE', readonly=True)
-#    document = fields.Reference('Source Document', selection=[],
-#            readonly=True)
+    document = fields.Reference('Source Document', selection='get_model',
+            readonly=True)
 
     @staticmethod
     def default_date():
         return datetime.now()
 
+    @classmethod
+    def get_model(cls):
+        cr = Transaction().cursor
+        cr.execute('''\
+            SELECT
+                m.model,
+                m.name
+            FROM
+                ir_model m
+            ORDER BY
+                m.name
+        ''')
+        return cr.fetchall()
