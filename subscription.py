@@ -2,11 +2,13 @@
 # The COPYRIGHT file at the top level of this repository contains the full
 # copyright notices and license terms.
 
+from ...config import CONFIG
 from datetime import datetime
 from trytond.model import ModelView, ModelSQL, fields
 from trytond.pool import Pool
 from trytond.pyson import Eval, Get, Id
 from trytond.transaction import Transaction
+import contextlib
 import logging
 
 __all__ = [
@@ -16,7 +18,7 @@ __all__ = [
 ]
 
 STATES = {
-    'readonly': ~Eval('state', 'running'),
+    'readonly': Eval('state') == 'running',
 }
 DEPENDS = ['state']
 
@@ -24,39 +26,39 @@ class SubscriptionSubscription(ModelSQL, ModelView):
     'Subscription'
     __name__ = 'subscription.subscription'
 
-    name = fields.Char('Name', select=True, required=True, translate=True)
+    name = fields.Char('Name', select=True, required=True, states=STATES)
     user = fields.Many2One('res.user', 'User', required=True,
-        domain=[('active', '=', False)])
+        domain=[('active', '=', False)], states=STATES)
     request_user = fields.Many2One(
-        'res.user', 'Request User', required=True,
+        'res.user', 'Request User', required=True, states=STATES,
         help='The user who will receive requests in case of failure.')
-    request_group = fields.Many2One(
-        'res.group', 'Request Group',
+    request_group = fields.Many2One('res.group', 'Request Group',
+        required=True, states=STATES,
         help='The group who will receive requests in case of failure.')
-    active = fields.Boolean('Active', select=True,
+    active = fields.Boolean('Active', select=True, states=STATES,
             help='If the active field is set to False, it will allow you to ' \
                 'hide the subscription without removing it.')
-    interval_number = fields.Integer('Interval Qty')
+    interval_number = fields.Integer('Interval Qty', states=STATES)
     interval_type = fields.Selection([
             ('days', 'Days'),
             ('weeks', 'Weeks'),
             ('months', 'Months'),
-        ], 'Interval Unit')
-    number_calls = fields.Integer('Number of documents')
-    next_call = fields.DateTime('First Date')
+        ], 'Interval Unit', states=STATES)
+    number_calls = fields.Integer('Number of documents', states=STATES)
+    next_call = fields.DateTime('First Date', states=STATES)
     state = fields.Selection([
             ('draft','Draft'),
             ('running','Running'),
-            ('done','Done')], 'State', readonly=True)
+            ('done','Done')], 'State', readonly=True, states=STATES)
     model_source = fields.Reference('Source Document',
             selection='get_model', depends=['state'],
-            states={'readonly': Eval('state') == 'running'},
             help='User can choose the source model on which he wants to ' \
-                'create models.')
-    lines = fields.One2Many('subscription.line', 'subscription', 'Lines')
+                'create models.', states=STATES)
+    lines = fields.One2Many('subscription.line', 'subscription', 'Lines',
+            states=STATES)
     history = fields.One2Many('subscription.history',
-            'subscription', 'History')
-    cron = fields.Many2One('ir.cron', 'Cron Job', 
+            'subscription', 'History', states=STATES)
+    cron = fields.Many2One('ir.cron', 'Cron Job', states=STATES, 
             help='Scheduler which runs on subscription.', ondelete='CASCADE')
     note = fields.Text('Notes', help='Description or Summary of Subscription.')
 
@@ -78,6 +80,8 @@ class SubscriptionSubscription(ModelSQL, ModelView):
             'error': 'Error. Wrong Source Document',
             'provide_another_source': 'Please provide another source ' \
                 'model.\nThis one does not exist!',
+            'error_creating': 'Error creating document \'%s\'',
+            'created_successfully': 'Document \'%s\' created successfully',
             })
         cls._sql_constraints = [
             ('name_unique', 'UNIQUE(name)',
@@ -177,7 +181,7 @@ class SubscriptionSubscription(ModelSQL, ModelView):
             self.write([subscription], vals)
 
     @classmethod
-    def model_copy(cls, subscription_id=None):
+    def model_copy(cls, subscription_id):
         Cron = Pool().get('ir.cron')
         History = Pool().get('subscription.history')
         subscription = cls(subscription_id)
@@ -187,12 +191,28 @@ class SubscriptionSubscription(ModelSQL, ModelView):
                 or False
         if model_id:
             Model = Pool().get(subscription.model_source.__name__)
+            Request = Pool().get('res.request')
             default = {'state':'draft'}
             localspace = {
                 'self': subscription,
                 'pool': Pool(),
                 'transaction': Transaction(),
             }
+            req_vals = {
+                'act_from': subscription.user.id,
+                'date_sent': datetime.now(),
+                'references': [
+                    ('create', {
+                            'reference': '%s,%s' % \
+                            (subscription.cron.__name__, subscription.cron.id)
+                        }
+                    )],
+                'state': 'waiting',
+                'trigger_date': datetime.now(),
+            }
+
+            # Map subscription lines and create a copy of the document
+            # and save logs in subscription.history model
             for line in subscription.lines:
                 with Transaction().set_context():
                     try:
@@ -212,22 +232,56 @@ class SubscriptionSubscription(ModelSQL, ModelView):
                     default[line.field.name] = localspace['result'] \
                             if 'result' in localspace else False
             try:
-                model_id = Model.copy([subscription.model_source], default)
+                model = Model.copy([subscription.model_source], default)
             except:
-                vals = {
-                    'log': str('Error creating document %s. See logs for ' \
-                            'more information.' % \
-                            subscription.model_source.__name__),
+                history_vals = {
+                    'log': cls.raise_user_error(
+                        error='error_creating',
+                        error_args=subscription.model_source.__name__, 
+                        raise_exception=False),
                     'subscription': subscription,
                 }
+                req_vals['name'] = cls.raise_user_error(
+                        error='error_creating',
+                        error_args=subscription.name, 
+                        raise_exception=False)
+                req_vals['body'] = cls.raise_user_error(
+                        error='error_creating',
+                        error_args=subscription.model_source.__name__,
+                        raise_exception=False)
+                req_vals['priority'] = '2'
             else:
-                vals = {
-                    'log': 'Document %s created successfully.' % \
-                            subscription.model_source.__name__,
+                history_vals = {
+                    'log': cls.raise_user_error(
+                        error='created_successfully',
+                        error_args=subscription.model_source.__name__, 
+                        raise_exception=False),
                     'subscription': subscription.id,
-#                    'model': (subscription.model_source.__name__, model_id),
                 }
-            History.create(vals)
+                req_vals['name'] = cls.raise_user_error(
+                        error='created_successfully',
+                        error_args=subscription.name, 
+                        raise_exception=False)
+                req_vals['body'] = cls.raise_user_error(
+                        error='created_successfully',
+                        error_args=model[0].reference or model[0].id,
+                        raise_exception=False)
+                req_vals['priority'] = '0'
+            History.create(history_vals)
+
+            # Send requests to users in request_group
+            for user in subscription.request_group.users:
+                if user != subscription.request_user and user.active:
+                    language = (user.language.code if user.language
+                            else CONFIG['language'])
+                    with contextlib.nested(Transaction().set_user(user.id),
+                            Transaction().set_context(language=language)):
+                        req_vals['act_to'] = user.id
+                        vals = Cron._get_request_values(subscription.cron)
+                        request = Request.create(req_vals)
+
+            # If it is the last cron execution, set the state of the
+            # subscriptio to done
             if remaining == 1:
                 subscription.write([subscription], {'state': 'done'})
         else:
@@ -282,12 +336,12 @@ class SubscriptionHistory(ModelSQL, ModelView):
     __name__ = "subscription.history"
     _rec_name = 'date'
 
-    date = fields.DateTime('Date')
+    date = fields.DateTime('Date', readonly=True)
     subscription = fields.Many2One('subscription.subscription',
-            'Subscription')
-    log = fields.Char('Result')
+            'Subscription', readonly=True)
+    log = fields.Char('Result', readonly=True)
     subscription = fields.Many2One('subscription.subscription',
-            'Subscription', ondelete='CASCADE')
+            'Subscription', ondelete='CASCADE', readonly=True)
 #    document = fields.Reference('Source Document', selection=[],
 #            readonly=True)
 
