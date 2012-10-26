@@ -7,6 +7,7 @@ from datetime import datetime
 from trytond.model import ModelView, ModelSQL, fields
 from trytond.pool import Pool
 from trytond.pyson import Eval, Get, Id
+from trytond.tools import safe_eval
 from trytond.transaction import Transaction
 import contextlib
 import logging
@@ -21,6 +22,20 @@ STATES = {
     'readonly': Eval('state') == 'running',
 }
 DEPENDS = ['state']
+
+def get_model():
+    cr = Transaction().cursor
+    cr.execute('''\
+        SELECT
+            m.model,
+            m.name
+        FROM
+            ir_model m
+        ORDER BY
+            m.name
+    ''')
+    return cr.fetchall()
+MODEL_DOMAIN = get_model()
 
 class SubscriptionSubscription(ModelSQL, ModelView):
     'Subscription'
@@ -51,7 +66,7 @@ class SubscriptionSubscription(ModelSQL, ModelView):
             ('running','Running'),
             ('done','Done')], 'State', readonly=True, states=STATES)
     model_source = fields.Reference('Source Document',
-            selection='get_model', depends=['state'],
+            selection=MODEL_DOMAIN, depends=['state'],
             help='User can choose the source model on which he wants to ' \
                 'create models.', states=STATES)
     lines = fields.One2Many('subscription.line', 'subscription', 'Lines',
@@ -130,22 +145,9 @@ class SubscriptionSubscription(ModelSQL, ModelView):
         return 'draft'
 
     @classmethod
-    def get_model(cls):
-        cr = Transaction().cursor
-        cr.execute('''\
-            SELECT
-                m.model,
-                m.name
-            FROM
-                ir_model m
-            ORDER BY
-                m.name
-        ''')
-        return cr.fetchall()
-
-    @classmethod
     @ModelView.button
     def set_process(self, subscriptions):
+        RequestLink = Pool().get('res.request.link')
         for subscription in subscriptions:
             prova = str([subscription])
             prova2 = repr
@@ -180,6 +182,23 @@ class SubscriptionSubscription(ModelSQL, ModelView):
             }
             self.write([subscription], vals)
 
+            # Add a res.request.link record to allow linking the documents copied
+            # in requests created
+            request_link = RequestLink.search([
+                    ('model', '=', subscription.model_source.__name__),
+                ])
+            if not request_link:
+                Model = Pool().get('ir.model')
+                model = Model.search([
+                        ('model', '=', subscription.model_source.__name__),
+                    ])
+                link_vals = {
+                    'model': subscription.model_source.__name__,
+                    'priority': 5,
+                    'name': model and model[0] and model[0].name or False,
+                }
+                RequestLink.create(link_vals)
+
     @classmethod
     def model_copy(cls, subscription_id):
         Cron = Pool().get('ir.cron')
@@ -190,10 +209,11 @@ class SubscriptionSubscription(ModelSQL, ModelView):
         model_id = subscription.model_source and subscription.model_source.id \
                 or False
         if model_id:
+            context = Transaction().context.copy()
             Model = Pool().get(subscription.model_source.__name__)
             Request = Pool().get('res.request')
             default = {'state':'draft'}
-            localspace = {
+            context = {
                 'self': subscription,
                 'pool': Pool(),
                 'transaction': Transaction(),
@@ -201,12 +221,6 @@ class SubscriptionSubscription(ModelSQL, ModelView):
             req_vals = {
                 'act_from': subscription.user.id,
                 'date_sent': datetime.now(),
-                'references': [
-                    ('create', {
-                            'reference': '%s,%s' % \
-                            (subscription.cron.__name__, subscription.cron.id)
-                        }
-                    )],
                 'state': 'waiting',
                 'trigger_date': datetime.now(),
             }
@@ -214,23 +228,7 @@ class SubscriptionSubscription(ModelSQL, ModelView):
             # Map subscription lines and create a copy of the document
             # and save logs in subscription.history model
             for line in subscription.lines:
-                with Transaction().set_context():
-                    try:
-                        exec line.value in localspace
-                    except SyntaxError, e:
-                        logger.error('Syntax Error in field %s.\n'\
-                                'Error: %s' % (line.field.name, e))
-                        return None
-                    except NameError, e:
-                        logger.error('Syntax Error in field %s.\n'\
-                                'Error: %s' % (line.field.name, e))
-                        return None
-                    except Exception, e:
-                        logger.error('Unkonwn Error in field %s.'\
-                                '\nMessage: %s' % (line.field.name, e))
-                        return None
-                    default[line.field.name] = localspace['result'] \
-                            if 'result' in localspace else False
+                default[line.field.name] = safe_eval(line.value, context)
             try:
                 model = Model.copy([subscription.model_source], default)
             except:
@@ -267,6 +265,15 @@ class SubscriptionSubscription(ModelSQL, ModelView):
                         error_args=model[0].reference or model[0].id,
                         raise_exception=False)
                 req_vals['priority'] = '0'
+                req_vals['references'] = [
+                        ('create', {
+                                'reference': '%s,%s' % \
+                                (subscription.model_source.__name__,
+                                            model[0].id)
+                            }
+                        )]
+            history_vals['document'] = (subscription.model_source.__name__,
+                                        model[0].id)
             History.create(history_vals)
 
             # Send requests to users in request_group
@@ -308,12 +315,9 @@ class SubscriptionLine(ModelSQL, ModelView):
 
     subscription = fields.Many2One('subscription.subscription',
             'Subscription', ondelete='CASCADE', select=True)
-#    name = fields.Many2One('ir.model.field', 'Field',
-#            domain=[('model', '=',
-#                     Id(Eval('_parent_subscription', {}), 'model_source')
-#                )],
-#            select=True, required=True)
     field = fields.Many2One('ir.model.field', 'Field',
+# TODO domain to filter available fields of the model  model_source of related
+# subscription
 #        domain=[(
 #            'model', '=', Eval('_parent_subscription', {}).get('model_source')
 #        )],
@@ -342,23 +346,9 @@ class SubscriptionHistory(ModelSQL, ModelView):
     log = fields.Char('Result', readonly=True)
     subscription = fields.Many2One('subscription.subscription',
             'Subscription', ondelete='CASCADE', readonly=True)
-    document = fields.Reference('Source Document', selection='get_model',
+    document = fields.Reference('Source Document', selection=MODEL_DOMAIN,
             readonly=True)
 
     @staticmethod
     def default_date():
         return datetime.now()
-
-    @classmethod
-    def get_model(cls):
-        cr = Transaction().cursor
-        cr.execute('''\
-            SELECT
-                m.model,
-                m.name
-            FROM
-                ir_model m
-            ORDER BY
-                m.name
-        ''')
-        return cr.fetchall()
