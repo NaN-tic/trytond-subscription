@@ -49,7 +49,7 @@ class SubscriptionSubscription(ModelSQL, ModelView):
         help='The user who will receive requests in case of failure.')
     request_group = fields.Many2One('res.group', 'Request Group',
         required=True, states=STATES,
-        help='The group who will receive requests in case of failure.')
+        help='The group who will receive requests.')
     active = fields.Boolean('Active', select=True, states=STATES,
             help='If the active field is set to False, it will allow you to ' \
                 'hide the subscription without removing it.')
