@@ -6,7 +6,7 @@ from ...config import CONFIG
 from datetime import datetime
 from trytond.model import ModelView, ModelSQL, fields
 from trytond.pool import Pool
-from trytond.pyson import Eval, Get, Id
+from trytond.pyson import Eval
 from trytond.tools import safe_eval
 from trytond.transaction import Transaction
 import contextlib
@@ -149,8 +149,6 @@ class SubscriptionSubscription(ModelSQL, ModelView):
     def set_process(self, subscriptions):
         RequestLink = Pool().get('res.request.link')
         for subscription in subscriptions:
-            prova = str([subscription])
-            prova2 = repr
             vals = {
                 'model': subscription.__name__,
                 'name': subscription.name,
@@ -284,8 +282,8 @@ class SubscriptionSubscription(ModelSQL, ModelView):
                     with contextlib.nested(Transaction().set_user(user.id),
                             Transaction().set_context(language=language)):
                         req_vals['act_to'] = user.id
-                        vals = Cron._get_request_values(subscription.cron)
-                        request = Request.create(req_vals)
+                        Cron._get_request_values(subscription.cron)
+                        Request.create(req_vals)
 
             # If it is the last cron execution, set the state of the
             # subscriptio to done
