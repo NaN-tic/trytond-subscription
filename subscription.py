@@ -23,23 +23,22 @@ STATES = {
 }
 DEPENDS = ['state']
 
-def get_model():
-    cr = Transaction().cursor
-    cr.execute('''\
-        SELECT
-            m.model,
-            m.name
-        FROM
-            ir_model m
-        ORDER BY
-            m.name
-    ''')
-    return cr.fetchall()
-MODEL_DOMAIN = get_model()
-
 class SubscriptionSubscription(ModelSQL, ModelView):
     'Subscription'
     __name__ = 'subscription.subscription'
+
+    def get_model(self):
+        cr = Transaction().cursor
+        cr.execute('''\
+            SELECT
+                m.model,
+                m.name
+            FROM
+                ir_model m
+            ORDER BY
+                m.name
+        ''')
+        return cr.fetchall()
 
     name = fields.Char('Name', select=True, required=True, states=STATES)
     user = fields.Many2One('res.user', 'User', required=True,
@@ -66,7 +65,7 @@ class SubscriptionSubscription(ModelSQL, ModelView):
             ('running','Running'),
             ('done','Done')], 'State', readonly=True, states=STATES)
     model_source = fields.Reference('Source Document',
-            selection=MODEL_DOMAIN, depends=['state'],
+            selection=get_model, depends=['state'],
             help='User can choose the source model on which he wants to ' \
                 'create models.', states=STATES)
     lines = fields.One2Many('subscription.line', 'subscription', 'Lines',
@@ -337,13 +336,26 @@ class SubscriptionHistory(ModelSQL, ModelView):
     __name__ = "subscription.history"
     _rec_name = 'date'
 
+    def get_model(self):
+        cr = Transaction().cursor
+        cr.execute('''\
+            SELECT
+                m.model,
+                m.name
+            FROM
+                ir_model m
+            ORDER BY
+                m.name
+        ''')
+        return cr.fetchall()
+
     date = fields.DateTime('Date', readonly=True)
     subscription = fields.Many2One('subscription.subscription',
             'Subscription', readonly=True)
     log = fields.Char('Result', readonly=True)
     subscription = fields.Many2One('subscription.subscription',
             'Subscription', ondelete='CASCADE', readonly=True)
-    document = fields.Reference('Source Document', selection=MODEL_DOMAIN,
+    document = fields.Reference('Source Document', selection=get_model,
             readonly=True)
 
     @staticmethod
