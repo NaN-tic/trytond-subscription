@@ -30,20 +30,20 @@ for dep in info.get('depends', []):
 requires.append('trytond >= %s.%s, < %s.%s' %
         (major_version, minor_version, major_version, minor_version + 1))
 
-setup(name='trytond_subscription',
+setup(name='trytonzz_subscription',
     version=info.get('version', '0.0.1'),
     description='Tryton module with subscriptions',
     long_description=read('README'),
     author='Zikzakmedia SL',
     url='http://www.zikzakmedia.com',
-    download_url="https://bitbucket.org/zikzakmedia/trytond-subscription",
-    package_dir={'trytond.modules.subscription': '.'},
+    download_url="https://bitbucket.org/zikzakmedia/trytonzz-subscription",
+    package_dir={'trytonzz.modules.subscription': '.'},
     packages=[
-        'trytond.modules.subscription',
-        'trytond.modules.subscription.tests',
+        'trytonzz.modules.subscription',
+        'trytonzz.modules.subscription.tests',
         ],
     package_data={
-        'trytond.modules.subscription': info.get('xml', []) \
+        'trytonzz.modules.subscription': info.get('xml', []) \
             + ['tryton.cfg', 'locale/*.po'],
         },
     classifiers=[
@@ -66,9 +66,9 @@ setup(name='trytond_subscription',
     install_requires=requires,
     zip_safe=False,
     entry_points="""
-    [trytond.modules]
-    subscription = trytond.modules.subscription
+    [trytonzz.modules]
+    subscription = trytonzz.modules.subscription
     """,
     test_suite='tests',
-    test_loader='trytond.test_loader:Loader',
+    test_loader='trytonzz.test_loader:Loader',
     )
