@@ -36,14 +36,14 @@ setup(name='trytonzz_subscription',
     long_description=read('README'),
     author='Zikzakmedia SL',
     url='http://www.zikzakmedia.com',
-    download_url="https://bitbucket.org/zikzakmedia/trytonzz-subscription",
-    package_dir={'trytonzz.modules.subscription': '.'},
+    download_url="https://bitbucket.org/zikzakmedia/trytond-subscription",
+    package_dir={'trytond.modules.subscription': '.'},
     packages=[
-        'trytonzz.modules.subscription',
-        'trytonzz.modules.subscription.tests',
+        'trytond.modules.subscription',
+        'trytond.modules.subscription.tests',
         ],
     package_data={
-        'trytonzz.modules.subscription': info.get('xml', []) \
+        'trytond.modules.subscription': info.get('xml', []) \
             + ['tryton.cfg', 'locale/*.po'],
         },
     classifiers=[
@@ -66,9 +66,9 @@ setup(name='trytonzz_subscription',
     install_requires=requires,
     zip_safe=False,
     entry_points="""
-    [trytonzz.modules]
-    subscription = trytonzz.modules.subscription
+    [trytond.modules]
+    subscription = trytond.modules.subscription
     """,
     test_suite='tests',
-    test_loader='trytonzz.test_loader:Loader',
+    test_loader='trytond.test_loader:Loader',
     )
