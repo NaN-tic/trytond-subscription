@@ -27,7 +27,8 @@ class SubscriptionSubscription(ModelSQL, ModelView):
     'Subscription'
     __name__ = 'subscription.subscription'
 
-    def get_model(self):
+    @classmethod
+    def get_model(cls):
         cr = Transaction().cursor
         cr.execute('''\
             SELECT
@@ -65,7 +66,7 @@ class SubscriptionSubscription(ModelSQL, ModelView):
             ('running','Running'),
             ('done','Done')], 'State', readonly=True, states=STATES)
     model_source = fields.Reference('Source Document',
-            selection=get_model, depends=['state'],
+            selection='get_model', depends=['state'],
             help='User can choose the source model on which he wants to ' \
                 'create models.', states=STATES)
     lines = fields.One2Many('subscription.line', 'subscription', 'Lines',
@@ -147,6 +148,7 @@ class SubscriptionSubscription(ModelSQL, ModelView):
     @ModelView.button
     def set_process(self, subscriptions):
         RequestLink = Pool().get('res.request.link')
+        to_create = []
         for subscription in subscriptions:
             vals = {
                 'model': subscription.__name__,
@@ -168,7 +170,7 @@ class SubscriptionSubscription(ModelSQL, ModelView):
             ]
             cron = Cron.search([domain])
             if not cron:
-                cron = Cron.create(vals)
+                cron = Cron.create([vals])[0]
             else:
                 vals['active'] = True
                 Cron.write(cron, vals)
@@ -189,12 +191,13 @@ class SubscriptionSubscription(ModelSQL, ModelView):
                 model = Model.search([
                         ('model', '=', subscription.model_source.__name__),
                     ])
-                link_vals = {
+                to_create.append({
                     'model': subscription.model_source.__name__,
                     'priority': 5,
                     'name': model and model[0] and model[0].name or False,
-                }
-                RequestLink.create(link_vals)
+                })
+        if to_create:
+            RequestLink.create(to_create)
 
     @classmethod
     def model_copy(cls, subscription_id):
@@ -271,9 +274,10 @@ class SubscriptionSubscription(ModelSQL, ModelView):
                         )]
             history_vals['document'] = (subscription.model_source.__name__,
                                         model[0].id)
-            History.create(history_vals)
+            History.create([history_vals])
 
             # Send requests to users in request_group
+            to_create = []
             for user in subscription.request_group.users:
                 if user != subscription.request_user and user.active:
                     language = (user.language.code if user.language
@@ -281,8 +285,10 @@ class SubscriptionSubscription(ModelSQL, ModelView):
                     with contextlib.nested(Transaction().set_user(user.id),
                             Transaction().set_context(language=language)):
                         req_vals['act_to'] = user.id
+                        to_create.append(req_vals)
                         Cron._get_request_values(subscription.cron)
-                        Request.create(req_vals)
+            if to_create:
+                Request.create(to_create)
 
             # If it is the last cron execution, set the state of the
             # subscriptio to done
@@ -336,7 +342,8 @@ class SubscriptionHistory(ModelSQL, ModelView):
     __name__ = "subscription.history"
     _rec_name = 'date'
 
-    def get_model(self):
+    @classmethod
+    def get_model(cls):
         cr = Transaction().cursor
         cr.execute('''\
             SELECT
@@ -350,12 +357,10 @@ class SubscriptionHistory(ModelSQL, ModelView):
         return cr.fetchall()
 
     date = fields.DateTime('Date', readonly=True)
-    subscription = fields.Many2One('subscription.subscription',
-            'Subscription', readonly=True)
     log = fields.Char('Result', readonly=True)
     subscription = fields.Many2One('subscription.subscription',
             'Subscription', ondelete='CASCADE', readonly=True)
-    document = fields.Reference('Source Document', selection=get_model,
+    document = fields.Reference('Source Document', selection='get_model',
             readonly=True)
 
     @staticmethod
