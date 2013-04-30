@@ -1,7 +1,6 @@
 # This file is part of subscription module of Tryton.
 # The COPYRIGHT file at the top level of this repository contains the full
 # copyright notices and license terms.
-
 from ...config import CONFIG
 from datetime import datetime
 from trytond.model import ModelView, ModelSQL, fields
@@ -22,6 +21,7 @@ STATES = {
     'readonly': Eval('state') == 'running',
 }
 DEPENDS = ['state']
+
 
 class SubscriptionSubscription(ModelSQL, ModelView):
     'Subscription'

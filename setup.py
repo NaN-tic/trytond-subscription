@@ -1,12 +1,10 @@
 #!/usr/bin/env python
-#This file is part of Tryton.  The COPYRIGHT file at the top level of
-#this repository contains the full copyright notices and license terms.
-
+# This file is part of subscription module of Tryton.
+# The COPYRIGHT file at the top level of this repository contains the full
+# copyright notices and license terms.
 from setuptools import setup
 import re
-import os
 import ConfigParser
-
 
 def read(fname):
     return open(os.path.join(os.path.dirname(__file__), fname)).read()

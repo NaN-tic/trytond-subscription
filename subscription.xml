@@ -4,7 +4,6 @@ The COPYRIGHT file at the top level of this repository contains the full
 copyright notices and license terms. -->
 <tryton>
     <data>
-
         <record model="res.group" id="group_subscription_admin">
             <field name="name">Subscription Administration</field>
         </record>
@@ -20,7 +19,7 @@ copyright notices and license terms. -->
         <menuitem name="Subscription" id="menu_main_subscription"
                 parent="ir.menu_administration"/>
 
-<!-- subscription.subscription -->
+        <!-- subscription.subscription -->
         <record model="ir.ui.view" id="subscription_subscription_view_tree">
             <field name="model">subscription.subscription</field>
             <field name="type">tree</field>
@@ -144,7 +143,7 @@ copyright notices and license terms. -->
             <field name="perm_delete" eval="True"/>
         </record>
 
-<!-- subscription.line -->
+        <!-- subscription.line -->
         <record model="ir.ui.view" id="subscription_line_view_tree">
             <field name="model">subscription.line</field>
             <field name="type">tree</field>
@@ -210,8 +209,7 @@ copyright notices and license terms. -->
             <field name="perm_delete" eval="True"/>
         </record>
 
-
-<!-- subscription.history -->
+        <!-- subscription.history -->
         <record model="ir.ui.view" id="subscription_history_view_tree">
             <field name="model">subscription.history</field>
             <field name="type">tree</field>
@@ -284,6 +282,5 @@ copyright notices and license terms. -->
             <field name="perm_create" eval="True"/>
             <field name="perm_delete" eval="True"/>
         </record>
-
     </data>
 </tryton>
