@@ -1,13 +1,11 @@
 #!/usr/bin/env python
-# This file is part of subscription module of Tryton.
-# The COPYRIGHT file at the top level of this repository contains the full
-# copyright notices and license terms.
+#This file is part subscription module for Tryton.
+#The COPYRIGHT file at the top level of this repository contains
+#the full copyright notices and license terms.
+
 from setuptools import setup
 import re
 import ConfigParser
-
-def read(fname):
-    return open(os.path.join(os.path.dirname(__file__), fname)).read()
 
 config = ConfigParser.ConfigParser()
 config.readfp(open('tryton.cfg'))
@@ -30,8 +28,7 @@ requires.append('trytond >= %s.%s, < %s.%s' %
 
 setup(name='trytonzz_subscription',
     version=info.get('version', '0.0.1'),
-    description='Tryton module with subscriptions',
-    long_description=read('README'),
+    description='TTryton module with subscriptions',
     author='Zikzakmedia SL',
     author_email='zikzak@zikzakmedia.com',
     url='http://www.zikzakmedia.com',
@@ -70,4 +67,4 @@ setup(name='trytonzz_subscription',
     """,
     test_suite='tests',
     test_loader='trytond.test_loader:Loader',
-    )
+)
