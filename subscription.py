@@ -201,6 +201,8 @@ class SubscriptionSubscription(ModelSQL, ModelView):
 
     @classmethod
     def model_copy(cls, subscription_id):
+        logger.info('Running subscription ID %s.' % subscription_id)
+
         Cron = Pool().get('ir.cron')
         History = Pool().get('subscription.history')
         subscription = cls(subscription_id)
@@ -294,6 +296,7 @@ class SubscriptionSubscription(ModelSQL, ModelView):
             # subscriptio to done
             if remaining == 1:
                 subscription.write([subscription], {'state': 'done'})
+            logger.info('End subscription ID %s.' % subscription_id)
         else:
             logger.error('Document in subscription %s not found.\n' % \
                          subscription.name)
