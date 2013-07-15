@@ -262,7 +262,7 @@ class SubscriptionSubscription(ModelSQL, ModelView):
                         raise_exception=False)
                 req_vals['body'] = cls.raise_user_error(
                         error='created_successfully',
-                        error_args=model[0].reference or model[0].id,
+                        error_args=model[0].id,
                         raise_exception=False)
                 req_vals['priority'] = '0'
                 req_vals['references'] = [
