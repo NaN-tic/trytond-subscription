@@ -11,11 +11,7 @@ from trytond.transaction import Transaction
 import contextlib
 import logging
 
-__all__ = [
-    'SubscriptionSubscription',
-    'SubscriptionLine',
-    'SubscriptionHistory',
-]
+__all__ = ['SubscriptionSubscription', 'SubscriptionLine', 'SubscriptionHistory']
 
 STATES = {
     'readonly': Eval('state') == 'running',
@@ -201,7 +197,8 @@ class SubscriptionSubscription(ModelSQL, ModelView):
 
     @classmethod
     def model_copy(cls, subscription_id):
-        logger.info('Running subscription ID %s.' % subscription_id)
+        logging.getLogger('subscription').info(
+            'Running subscription ID %s' % (subscription_id))
 
         Cron = Pool().get('ir.cron')
         History = Pool().get('subscription.history')
