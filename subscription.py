@@ -280,7 +280,7 @@ class SubscriptionSubscription(ModelSQL, ModelView):
             for user in subscription.request_group.users:
                 if user != subscription.request_user and user.active:
                     language = (user.language.code if user.language
-                            else CONFIG['language'])
+                            else CONFIG.get('language'))
                     with contextlib.nested(Transaction().set_user(user.id),
                             Transaction().set_context(language=language)):
                         req_vals['act_to'] = user.id
