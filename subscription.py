@@ -257,7 +257,7 @@ class SubscriptionSubscription(ModelSQL, ModelView):
                 }
                 req_vals['name'] = cls.raise_user_error(
                         error='created_successfully',
-                        error_args=subscription.name
+                        error_args=subscription.name,
                         raise_exception=False)
                 req_vals['body'] = cls.raise_user_error(
                         error='created_successfully',
