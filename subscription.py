@@ -1,8 +1,8 @@
 # This file is part of subscription module of Tryton.
 # The COPYRIGHT file at the top level of this repository contains the full
 # copyright notices and license terms.
-from ...config import CONFIG
 from datetime import datetime
+from trytond.config import config
 from trytond.model import ModelView, ModelSQL, fields
 from trytond.pool import Pool
 from trytond.pyson import Eval
@@ -69,7 +69,7 @@ class SubscriptionSubscription(ModelSQL, ModelView):
             states=STATES)
     history = fields.One2Many('subscription.history',
             'subscription', 'History', states=STATES)
-    cron = fields.Many2One('ir.cron', 'Cron Job', states=STATES, 
+    cron = fields.Many2One('ir.cron', 'Cron Job', states=STATES,
             help='Scheduler which runs on subscription.', ondelete='CASCADE')
     note = fields.Text('Notes', help='Description or Summary of Subscription.')
 
@@ -234,13 +234,13 @@ class SubscriptionSubscription(ModelSQL, ModelView):
                 history_vals = {
                     'log': cls.raise_user_error(
                         error='error_creating',
-                        error_args=subscription.model_source.__name__, 
+                        error_args=subscription.model_source.__name__,
                         raise_exception=False),
                     'subscription': subscription,
                 }
                 req_vals['name'] = cls.raise_user_error(
                         error='error_creating',
-                        error_args=subscription.name, 
+                        error_args=subscription.name,
                         raise_exception=False)
                 req_vals['body'] = cls.raise_user_error(
                         error='error_creating',
@@ -251,13 +251,13 @@ class SubscriptionSubscription(ModelSQL, ModelView):
                 history_vals = {
                     'log': cls.raise_user_error(
                         error='created_successfully',
-                        error_args=subscription.model_source.__name__, 
+                        error_args=subscription.model_source.__name__,
                         raise_exception=False),
                     'subscription': subscription.id,
                 }
                 req_vals['name'] = cls.raise_user_error(
                         error='created_successfully',
-                        error_args=subscription.name, 
+                        error_args=subscription.name
                         raise_exception=False)
                 req_vals['body'] = cls.raise_user_error(
                         error='created_successfully',
@@ -280,7 +280,7 @@ class SubscriptionSubscription(ModelSQL, ModelView):
             for user in subscription.request_group.users:
                 if user != subscription.request_user and user.active:
                     language = (user.language.code if user.language
-                            else CONFIG.get('language'))
+                            else config.get('database', 'language'))
                     with contextlib.nested(Transaction().set_user(user.id),
                             Transaction().set_context(language=language)):
                         req_vals['act_to'] = user.id
