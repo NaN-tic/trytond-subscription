@@ -2,11 +2,11 @@
 # The COPYRIGHT file at the top level of this repository contains the full
 # copyright notices and license terms.
 from datetime import datetime
+from simpleeval import simple_eval
 from trytond.config import config
 from trytond.model import ModelView, ModelSQL, fields
 from trytond.pool import Pool
 from trytond.pyson import Eval
-from trytond.tools import safe_eval
 from trytond.transaction import Transaction
 import contextlib
 import logging
@@ -15,8 +15,9 @@ __all__ = ['SubscriptionSubscription', 'SubscriptionLine', 'SubscriptionHistory'
 
 STATES = {
     'readonly': Eval('state') == 'running',
-}
+    }
 DEPENDS = ['state']
+logger = logging.getLogger(__name__)
 
 
 class SubscriptionSubscription(ModelSQL, ModelView):
@@ -197,13 +198,12 @@ class SubscriptionSubscription(ModelSQL, ModelView):
 
     @classmethod
     def model_copy(cls, subscription_id):
-        logging.getLogger('subscription').info(
-            'Running subscription ID %s' % (subscription_id))
+        logger.info('Running subscription ID %s' % (subscription_id))
 
         Cron = Pool().get('ir.cron')
         History = Pool().get('subscription.history')
         subscription = cls(subscription_id)
-        logger = logging.getLogger('subscription_subscription')
+
         remaining = Cron.browse([subscription.cron.id])[0].number_calls
         model_id = subscription.model_source and subscription.model_source.id \
                 or False
@@ -227,7 +227,7 @@ class SubscriptionSubscription(ModelSQL, ModelView):
             # Map subscription lines and create a copy of the document
             # and save logs in subscription.history model
             for line in subscription.lines:
-                default[line.field.name] = safe_eval(line.value, context)
+                default[line.field.name] = simple_eval(line.value, context)
             try:
                 model = Model.copy([subscription.model_source], default)
             except:
