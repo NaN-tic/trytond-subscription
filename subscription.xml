@@ -34,6 +34,8 @@ copyright notices and license terms. -->
                         <field name="interval_type"/>
                         <field name="number_calls"/>
                         <field name="next_call"/>
+                        <field name="next_call" widget="date"/>
+                        <field name="next_call" widget="time" string="Time"/>
                         <field name="state"/>
                         <field name="cron"/>
                         <field name="active"/>
@@ -216,7 +218,8 @@ copyright notices and license terms. -->
             <field name="arch" type="xml">
                 <![CDATA[
                     <tree string="Subscription History">
-                        <field name="date"/>
+                        <field name="date" widget="date"/>
+                        <field name="date" widget="time" string="Time"/>
                         <field name="subscription"/>
                         <field name="log"/>
                     </tree>
