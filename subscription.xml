@@ -23,87 +23,13 @@ copyright notices and license terms. -->
         <record model="ir.ui.view" id="subscription_subscription_view_tree">
             <field name="model">subscription.subscription</field>
             <field name="type">tree</field>
-            <field name="arch" type="xml">
-                <![CDATA[
-                    <tree string="Subscriptions">
-                        <field name="name"/>
-                        <field name="user"/>
-                        <field name="request_user"/>
-                        <field name="request_group"/>
-                        <field name="interval_number"/>
-                        <field name="interval_type"/>
-                        <field name="number_calls"/>
-                        <field name="next_call"/>
-                        <field name="next_call" widget="date"/>
-                        <field name="next_call" widget="time" string="Time"/>
-                        <field name="state"/>
-                        <field name="cron"/>
-                        <field name="active"/>
-                    </tree>
-                    ]]>
-            </field>
+            <field name="name">subscription_tree</field>
         </record>
 
         <record model="ir.ui.view" id="subscription_subscription_view_form">
             <field name="model">subscription.subscription</field>
             <field name="type">form</field>
-            <field name="arch" type="xml">
-                <![CDATA[
-                    <form string="Subscription" col="6">
-                        <label name="name"/>
-                        <field name="name" xexpand="1"/>
-                        <label name="active"/>
-                        <field name="active" xexpand="0"/>
-                        <newline/>
-                        <label name="user"/>
-                        <field name="user" xexpand="1"/>
-                        <label name="request_user"/>
-                        <field name="request_user" xexpand="1"/>
-                        <label name="request_group"/>
-                        <field name="request_group" xexpand="1"/>
-                        <notebook colspan="6">
-                            <page string="Subsription Data"
-                                    id="subsription_data" col="6">
-                                <label name="interval_type"/>
-                                <field name="interval_type" colspan="5"/>
-                                <label name="interval_number"/>
-                                <field name="interval_number"/>
-                                <label name="number_calls"/>
-                                <field name="number_calls"/>
-                                <label name="next_call"/>
-                                <field name="next_call"/>
-                                <label name="model_source"/>
-                                <field name="model_source" colspan="5"/>
-                                <label name="cron"/>
-                                <field name="cron" colspan="5"/>
-                                <label name="state"/>
-                                <field name="state"/>
-                                <group col="3" colspan="4"
-                                        id="subscriptions_buttons">
-                                    <button name="set_process"
-                                        string="Process"
-                                        icon="tryton-go-next"/>
-                                    <button name="set_done"
-                                        string="Stop"
-                                        icon="tryton-cancel"/>
-                                    <button name="set_draft"
-                                        string="Set to Draft"
-                                        icon="tryton-ok"/>
-                                </group>
-                            </page>
-                            <page string="Computed Fields" id="computed_lines">
-                                <field name="lines" colspan="4"/>
-                            </page>
-                            <page string="History" id="notes">
-                                <field name="history" colspan="4"/>
-                            </page>
-                            <page string="Notes" id="notes">
-                                <field name="note" colspan="4"/>
-                            </page>
-                        </notebook>
-                    </form>
-                    ]]>
-            </field>
+            <field name="name">subscription_form</field>
         </record>
 
         <record model="ir.action.act_window" id="act_subscription_subscription">
@@ -149,32 +75,13 @@ copyright notices and license terms. -->
         <record model="ir.ui.view" id="subscription_line_view_tree">
             <field name="model">subscription.line</field>
             <field name="type">tree</field>
-            <field name="arch" type="xml">
-                <![CDATA[
-                    <tree string="Fields">
-                        <field name="field"/>
-                        <field name="value"/>
-                    </tree>
-                    ]]>
-            </field>
+            <field name="name">subscription_line_tree</field>
         </record>
 
         <record model="ir.ui.view" id="subscription_line_view_form">
             <field name="model">subscription.line</field>
             <field name="type">form</field>
-            <field name="arch" type="xml">
-                <![CDATA[
-                    <form string="Field" col="6">
-                        <label name="field"/>
-                        <field name="field"/>
-                        <label name="subscription"/>
-                        <field name="subscription"/>
-                        <separator string="Value" id="value"
-                                colspan="6"/>
-                        <field name="value" colspan="6"/>
-                    </form>
-                    ]]>
-            </field>
+            <field name="name">subscription_line_form</field>
         </record>
 
         <record model="ir.action.act_window" id="act_subscription_line">
@@ -215,36 +122,13 @@ copyright notices and license terms. -->
         <record model="ir.ui.view" id="subscription_history_view_tree">
             <field name="model">subscription.history</field>
             <field name="type">tree</field>
-            <field name="arch" type="xml">
-                <![CDATA[
-                    <tree string="Subscription History">
-                        <field name="date" widget="date"/>
-                        <field name="date" widget="time" string="Time"/>
-                        <field name="subscription"/>
-                        <field name="log"/>
-                    </tree>
-                    ]]>
-            </field>
+            <field name="name">subscription_history_tree</field>
         </record>
 
         <record model="ir.ui.view" id="subscription_history_view_form">
             <field name="model">subscription.history</field>
             <field name="type">form</field>
-            <field name="arch" type="xml">
-                <![CDATA[
-                    <form string="Subscription History" col="4">
-                        <label name="date"/>
-                        <field name="date"/>
-                        <label name="subscription"/>
-                        <field name="subscription"/>
-                        <newline/>
-                        <label name="document"/>
-                        <field name="document" colspan="3"/>
-                        <label name="log"/>
-                        <field name="log" colspan="3"/>
-                    </form>
-                    ]]>
-            </field>
+            <field name="name">subscription_history_form</field>
         </record>
 
         <record model="ir.action.act_window" id="act_subscription_history">

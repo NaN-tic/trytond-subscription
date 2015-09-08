@@ -1,0 +1,56 @@
+<?xml version="1.0"?>
+<!-- This file is part survey module for Tryton.
+The COPYRIGHT file at the top level of this repository contains the full copyright notices and license terms. -->
+<form string="Subscription" col="6">
+    <label name="name"/>
+    <field name="name" xexpand="1"/>
+    <label name="active"/>
+    <field name="active" xexpand="0"/>
+    <newline/>
+    <label name="user"/>
+    <field name="user" xexpand="1"/>
+    <label name="request_user"/>
+    <field name="request_user" xexpand="1"/>
+    <label name="request_group"/>
+    <field name="request_group" xexpand="1"/>
+    <notebook colspan="6">
+        <page string="Subsription Data"
+                id="subsription_data" col="6">
+            <label name="interval_type"/>
+            <field name="interval_type" colspan="5"/>
+            <label name="interval_number"/>
+            <field name="interval_number"/>
+            <label name="number_calls"/>
+            <field name="number_calls"/>
+            <label name="next_call"/>
+            <field name="next_call"/>
+            <label name="model_source"/>
+            <field name="model_source" colspan="5"/>
+            <label name="cron"/>
+            <field name="cron" colspan="5"/>
+            <label name="state"/>
+            <field name="state"/>
+            <group col="3" colspan="4"
+                    id="subscriptions_buttons">
+                <button name="set_process"
+                    string="Process"
+                    icon="tryton-go-next"/>
+                <button name="set_done"
+                    string="Stop"
+                    icon="tryton-cancel"/>
+                <button name="set_draft"
+                    string="Set to Draft"
+                    icon="tryton-ok"/>
+            </group>
+        </page>
+        <page string="Computed Fields" id="computed_lines">
+            <field name="lines" colspan="4"/>
+        </page>
+        <page string="History" id="notes">
+            <field name="history" colspan="4"/>
+        </page>
+        <page string="Notes" id="notes">
+            <field name="note" colspan="4"/>
+        </page>
+    </notebook>
+</form>
