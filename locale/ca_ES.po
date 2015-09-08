@@ -205,8 +205,12 @@ msgstr ""
 "pool.get ('ir.date'). today ()"
 
 msgctxt "help:subscription.subscription,active:"
-msgid "If the active field is set to False, it will allow you to hide the subscription without removing it."
-msgstr "Si el camp actiu es posa a fals, es podrà amagar la subscripció sense esborrar-la."
+msgid ""
+"If the active field is set to False, it will allow you to hide the "
+"subscription without removing it."
+msgstr ""
+"Si el camp actiu es posa a fals, es podrà amagar la subscripció sense "
+"esborrar-la."
 
 msgctxt "help:subscription.subscription,cron:"
 msgid "Scheduler which runs on subscription."
@@ -214,7 +218,8 @@ msgstr "Planificador que s'executa a la subscripció."
 
 msgctxt "help:subscription.subscription,model_source:"
 msgid "User can choose the source model on which he wants to create models."
-msgstr "L'usuari por seleccionar el model font des del que vol crear els models."
+msgstr ""
+"L'usuari por seleccionar el model font des del que vol crear els models."
 
 msgctxt "help:subscription.subscription,note:"
 msgid "Description or Summary of Subscription."
@@ -268,605 +273,21 @@ msgctxt "model:subscription.subscription,name:"
 msgid "Subscription"
 msgstr "Subscripció"
 
-msgctxt "selection:subscription.history,document:"
-msgid "Action"
-msgstr "Acció"
-
-msgctxt "selection:subscription.history,document:"
-msgid "Action - Group"
-msgstr "Acció - Grup"
-
-msgctxt "selection:subscription.history,document:"
-msgid "Action URL"
-msgstr "Acció URL"
-
-msgctxt "selection:subscription.history,document:"
-msgid "Action act window"
-msgstr "Acció de finestra"
-
-msgctxt "selection:subscription.history,document:"
-msgid "Action act window view"
-msgstr "Acció de vista de finestra"
-
-msgctxt "selection:subscription.history,document:"
-msgid "Action keyword"
-msgstr "Acció de clau"
-
-msgctxt "selection:subscription.history,document:"
-msgid "Action report"
-msgstr "Acció d'informe"
-
-msgctxt "selection:subscription.history,document:"
-msgid "Action wizard"
-msgstr "Acció d'assistent"
-
-msgctxt "selection:subscription.history,document:"
-msgid "Attachment"
-msgstr "Adjunt"
-
-msgctxt "selection:subscription.history,document:"
-msgid "Cache"
-msgstr "Cache"
-
-msgctxt "selection:subscription.history,document:"
-msgid "Clean translation"
-msgstr "Neteja traducció"
-
-msgctxt "selection:subscription.history,document:"
-msgid "Config wizard to run after installing module"
-msgstr "Configura l'assistent per executar-se després de la instal·lació del mòdul"
-
-msgctxt "selection:subscription.history,document:"
-msgid "Cron"
-msgstr "Cron"
-
-msgctxt "selection:subscription.history,document:"
-msgid "Date"
-msgstr "Data"
-
-msgctxt "selection:subscription.history,document:"
-msgid "Export"
-msgstr "Exporta"
-
-msgctxt "selection:subscription.history,document:"
-msgid "Export line"
-msgstr "Exporta línia"
-
-msgctxt "selection:subscription.history,document:"
-msgid "Export translation"
-msgstr "Exporta transacció"
-
-msgctxt "selection:subscription.history,document:"
-msgid "Group"
-msgstr "Grup"
-
-msgctxt "selection:subscription.history,document:"
-msgid "Icon"
-msgstr "Icona"
-
-msgctxt "selection:subscription.history,document:"
-msgid "Language"
-msgstr "Idioma"
-
-msgctxt "selection:subscription.history,document:"
-msgid "Model"
-msgstr "Model"
-
-msgctxt "selection:subscription.history,document:"
-msgid "Model Button"
-msgstr "Botó de model"
-
-msgctxt "selection:subscription.history,document:"
-msgid "Model Button - Group"
-msgstr "Model botó - Grup"
-
-msgctxt "selection:subscription.history,document:"
-msgid "Model Field Access"
-msgstr ""
-
-msgctxt "selection:subscription.history,document:"
-msgid "Model Field Group Rel"
-msgstr ""
-
-msgctxt "selection:subscription.history,document:"
-msgid "Model access"
-msgstr "Accés a model"
-
-msgctxt "selection:subscription.history,document:"
-msgid "Model data"
-msgstr "Model data"
-
-msgctxt "selection:subscription.history,document:"
-msgid "Model field"
-msgstr "Model camp"
-
-msgctxt "selection:subscription.history,document:"
-msgid "Module"
-msgstr "Mòdul"
-
-#, fuzzy
-msgctxt "selection:subscription.history,document:"
-msgid "Module Config Wizard First"
-msgstr "Primer assistent de configuració de mòdul"
-
-msgctxt "selection:subscription.history,document:"
-msgid "Module Config Wizard Other"
-msgstr ""
-
-msgctxt "selection:subscription.history,document:"
-msgid "Module Install Upgrade Done"
-msgstr ""
-
-msgctxt "selection:subscription.history,document:"
-msgid "Module Install Upgrade Start"
-msgstr "Inicia instal·lació actualització del mòdul"
-
-msgctxt "selection:subscription.history,document:"
-msgid "Module dependency"
-msgstr "Dependència de mòdul"
-
-#, fuzzy
-msgctxt "selection:subscription.history,document:"
-msgid "Print Model Graph"
-msgstr "Imprimeix gràfic de model"
-
-msgctxt "selection:subscription.history,document:"
-msgid "Property"
-msgstr ""
-
-msgctxt "selection:subscription.history,document:"
-msgid "Request"
-msgstr "Sol·licitut"
-
-msgctxt "selection:subscription.history,document:"
-msgid "Request Reference"
-msgstr ""
-
-#, fuzzy
-msgctxt "selection:subscription.history,document:"
-msgid "Request history"
-msgstr "Historial de peticions"
-
-msgctxt "selection:subscription.history,document:"
-msgid "Request link"
-msgstr ""
-
-msgctxt "selection:subscription.history,document:"
-msgid "Rule"
-msgstr ""
-
-msgctxt "selection:subscription.history,document:"
-msgid "Rule Group - Group"
-msgstr "Regla de grup - Grup"
-
-msgctxt "selection:subscription.history,document:"
-msgid "Rule Group - User"
-msgstr ""
-
-#, fuzzy
-msgctxt "selection:subscription.history,document:"
-msgid "Rule group"
-msgstr "Regla de grup"
-
-msgctxt "selection:subscription.history,document:"
-msgid "Sequence"
-msgstr ""
-
-msgctxt "selection:subscription.history,document:"
-msgid "Sequence Strict"
-msgstr ""
-
-msgctxt "selection:subscription.history,document:"
-msgid "Sequence Type - Group"
-msgstr ""
-
-#, fuzzy
-msgctxt "selection:subscription.history,document:"
-msgid "Sequence type"
-msgstr "Tipus de seqüència"
-
-msgctxt "selection:subscription.history,document:"
-msgid "Session"
-msgstr ""
-
-msgctxt "selection:subscription.history,document:"
-msgid "Session Wizard"
-msgstr ""
-
-msgctxt "selection:subscription.history,document:"
-msgid "Show view"
-msgstr ""
-
-#, fuzzy
-msgctxt "selection:subscription.history,document:"
-msgid "Subscription"
-msgstr "Subscripció"
-
-#, fuzzy
-msgctxt "selection:subscription.history,document:"
-msgid "Subscription History"
-msgstr "Historial de subscripció"
-
-#, fuzzy
-msgctxt "selection:subscription.history,document:"
-msgid "Subscription Line"
-msgstr "Línia de subscripció"
-
-msgctxt "selection:subscription.history,document:"
-msgid "Translation"
-msgstr ""
-
-msgctxt "selection:subscription.history,document:"
-msgid "Trigger"
-msgstr ""
-
-msgctxt "selection:subscription.history,document:"
-msgid "Trigger Log"
-msgstr ""
-
-msgctxt "selection:subscription.history,document:"
-msgid "UI Menu - Group"
-msgstr ""
-
-msgctxt "selection:subscription.history,document:"
-msgid "UI menu"
-msgstr ""
-
-msgctxt "selection:subscription.history,document:"
-msgid "Update Report Translation"
-msgstr "Actualitza traducció d'informe"
-
-msgctxt "selection:subscription.history,document:"
-msgid "Update translation"
-msgstr "Actualitza traducció"
-
-#, fuzzy
-msgctxt "selection:subscription.history,document:"
-msgid "User"
-msgstr "Usuari"
-
-msgctxt "selection:subscription.history,document:"
-msgid "User - Action"
-msgstr "Usuari - Acció"
-
-#, fuzzy
-msgctxt "selection:subscription.history,document:"
-msgid "User - Group"
-msgstr "Usuari - Grup"
-
-#, fuzzy
-msgctxt "selection:subscription.history,document:"
-msgid "User Config Init"
-msgstr "Configuració d'usuari inicial"
-
-msgctxt "selection:subscription.history,document:"
-msgid "User Warning"
-msgstr ""
-
-#, fuzzy
-msgctxt "selection:subscription.history,document:"
-msgid "View"
-msgstr "Vista"
-
-msgctxt "selection:subscription.history,document:"
-msgid "View Tree Expanded State"
-msgstr "Estat de vista d'arbre expandit"
-
-msgctxt "selection:subscription.history,document:"
-msgid "View Tree Width"
-msgstr ""
-
-msgctxt "selection:subscription.history,document:"
-msgid "View shortcut"
-msgstr ""
-
 msgctxt "selection:subscription.subscription,interval_type:"
 msgid "Days"
 msgstr "Dies"
 
 msgctxt "selection:subscription.subscription,interval_type:"
 msgid "Months"
-msgstr ""
+msgstr "Mesos"
 
 msgctxt "selection:subscription.subscription,interval_type:"
 msgid "Weeks"
-msgstr ""
-
-msgctxt "selection:subscription.subscription,model_source:"
-msgid "Action"
-msgstr "Acció"
-
-msgctxt "selection:subscription.subscription,model_source:"
-msgid "Action - Group"
-msgstr "Acció - Grup"
-
-msgctxt "selection:subscription.subscription,model_source:"
-msgid "Action URL"
-msgstr "Acció URL"
-
-msgctxt "selection:subscription.subscription,model_source:"
-msgid "Action act window"
-msgstr "Acció de finestra"
-
-msgctxt "selection:subscription.subscription,model_source:"
-msgid "Action act window view"
-msgstr "Acció de vista de finestra"
-
-msgctxt "selection:subscription.subscription,model_source:"
-msgid "Action keyword"
-msgstr "Acció de clau"
-
-msgctxt "selection:subscription.subscription,model_source:"
-msgid "Action report"
-msgstr "Acció d'informe"
-
-msgctxt "selection:subscription.subscription,model_source:"
-msgid "Action wizard"
-msgstr "Acció d'assistent"
-
-msgctxt "selection:subscription.subscription,model_source:"
-msgid "Attachment"
-msgstr "Adjunt"
-
-msgctxt "selection:subscription.subscription,model_source:"
-msgid "Cache"
-msgstr "Cache"
-
-msgctxt "selection:subscription.subscription,model_source:"
-msgid "Clean translation"
-msgstr "Neteja traducció"
-
-msgctxt "selection:subscription.subscription,model_source:"
-msgid "Config wizard to run after installing module"
-msgstr "Configura l'assistent per executar-se després de la instal·lació del mòdul"
-
-msgctxt "selection:subscription.subscription,model_source:"
-msgid "Cron"
-msgstr "Cron"
-
-msgctxt "selection:subscription.subscription,model_source:"
-msgid "Date"
-msgstr "Data"
-
-msgctxt "selection:subscription.subscription,model_source:"
-msgid "Export"
-msgstr "Exporta"
-
-msgctxt "selection:subscription.subscription,model_source:"
-msgid "Export line"
-msgstr "Exporta línia"
-
-msgctxt "selection:subscription.subscription,model_source:"
-msgid "Export translation"
-msgstr "Exporta transacció"
-
-msgctxt "selection:subscription.subscription,model_source:"
-msgid "Group"
-msgstr "Grup"
-
-msgctxt "selection:subscription.subscription,model_source:"
-msgid "Icon"
-msgstr "Icona"
-
-msgctxt "selection:subscription.subscription,model_source:"
-msgid "Language"
-msgstr "Idioma"
-
-msgctxt "selection:subscription.subscription,model_source:"
-msgid "Model"
-msgstr "Model"
-
-msgctxt "selection:subscription.subscription,model_source:"
-msgid "Model Button"
-msgstr "Botó de model"
-
-msgctxt "selection:subscription.subscription,model_source:"
-msgid "Model Button - Group"
-msgstr "Model botó - Grup"
-
-msgctxt "selection:subscription.subscription,model_source:"
-msgid "Model Field Access"
-msgstr ""
-
-msgctxt "selection:subscription.subscription,model_source:"
-msgid "Model Field Group Rel"
-msgstr ""
-
-msgctxt "selection:subscription.subscription,model_source:"
-msgid "Model access"
-msgstr "Accés a model"
-
-msgctxt "selection:subscription.subscription,model_source:"
-msgid "Model data"
-msgstr "Model data"
-
-msgctxt "selection:subscription.subscription,model_source:"
-msgid "Model field"
-msgstr "Model camp"
-
-#, fuzzy
-msgctxt "selection:subscription.subscription,model_source:"
-msgid "Module"
-msgstr "Mòdul"
-
-msgctxt "selection:subscription.subscription,model_source:"
-msgid "Module Config Wizard First"
-msgstr "Primer assistent de configuració de mòdul"
-
-msgctxt "selection:subscription.subscription,model_source:"
-msgid "Module Config Wizard Other"
-msgstr ""
-
-msgctxt "selection:subscription.subscription,model_source:"
-msgid "Module Install Upgrade Done"
-msgstr ""
-
-#, fuzzy
-msgctxt "selection:subscription.subscription,model_source:"
-msgid "Module Install Upgrade Start"
-msgstr "Inicia instal·lació actualització del mòdul"
-
-#, fuzzy
-msgctxt "selection:subscription.subscription,model_source:"
-msgid "Module dependency"
-msgstr "Dependència de mòdul"
-
-msgctxt "selection:subscription.subscription,model_source:"
-msgid "Print Model Graph"
-msgstr "Imprimeix gràfic de model"
-
-msgctxt "selection:subscription.subscription,model_source:"
-msgid "Property"
-msgstr ""
-
-#, fuzzy
-msgctxt "selection:subscription.subscription,model_source:"
-msgid "Request"
-msgstr "Sol·licitut"
-
-msgctxt "selection:subscription.subscription,model_source:"
-msgid "Request Reference"
-msgstr ""
-
-msgctxt "selection:subscription.subscription,model_source:"
-msgid "Request history"
-msgstr "Historial de peticions"
-
-msgctxt "selection:subscription.subscription,model_source:"
-msgid "Request link"
-msgstr ""
-
-msgctxt "selection:subscription.subscription,model_source:"
-msgid "Rule"
-msgstr ""
-
-msgctxt "selection:subscription.subscription,model_source:"
-msgid "Rule Group - Group"
-msgstr "Regla de grup - Grup"
-
-msgctxt "selection:subscription.subscription,model_source:"
-msgid "Rule Group - User"
-msgstr ""
-
-msgctxt "selection:subscription.subscription,model_source:"
-msgid "Rule group"
-msgstr "Regla de grup"
-
-msgctxt "selection:subscription.subscription,model_source:"
-msgid "Sequence"
-msgstr ""
-
-msgctxt "selection:subscription.subscription,model_source:"
-msgid "Sequence Strict"
-msgstr ""
-
-msgctxt "selection:subscription.subscription,model_source:"
-msgid "Sequence Type - Group"
-msgstr ""
-
-msgctxt "selection:subscription.subscription,model_source:"
-msgid "Sequence type"
-msgstr "Tipus de seqüència"
-
-msgctxt "selection:subscription.subscription,model_source:"
-msgid "Session"
-msgstr ""
-
-msgctxt "selection:subscription.subscription,model_source:"
-msgid "Session Wizard"
-msgstr ""
-
-msgctxt "selection:subscription.subscription,model_source:"
-msgid "Show view"
-msgstr ""
-
-#, fuzzy
-msgctxt "selection:subscription.subscription,model_source:"
-msgid "Subscription"
-msgstr "Subscripció"
-
-#, fuzzy
-msgctxt "selection:subscription.subscription,model_source:"
-msgid "Subscription History"
-msgstr "Historial de subscripció"
-
-#, fuzzy
-msgctxt "selection:subscription.subscription,model_source:"
-msgid "Subscription Line"
-msgstr "Línia de subscripció"
-
-msgctxt "selection:subscription.subscription,model_source:"
-msgid "Translation"
-msgstr ""
-
-msgctxt "selection:subscription.subscription,model_source:"
-msgid "Trigger"
-msgstr ""
-
-msgctxt "selection:subscription.subscription,model_source:"
-msgid "Trigger Log"
-msgstr ""
-
-msgctxt "selection:subscription.subscription,model_source:"
-msgid "UI Menu - Group"
-msgstr ""
-
-msgctxt "selection:subscription.subscription,model_source:"
-msgid "UI menu"
-msgstr ""
-
-#, fuzzy
-msgctxt "selection:subscription.subscription,model_source:"
-msgid "Update Report Translation"
-msgstr "Actualitza traducció d'informe"
-
-#, fuzzy
-msgctxt "selection:subscription.subscription,model_source:"
-msgid "Update translation"
-msgstr "Actualitza traducció"
-
-#, fuzzy
-msgctxt "selection:subscription.subscription,model_source:"
-msgid "User"
-msgstr "Usuari"
-
-#, fuzzy
-msgctxt "selection:subscription.subscription,model_source:"
-msgid "User - Action"
-msgstr "Usuari - Acció"
-
-msgctxt "selection:subscription.subscription,model_source:"
-msgid "User - Group"
-msgstr "Usuari - Grup"
-
-msgctxt "selection:subscription.subscription,model_source:"
-msgid "User Config Init"
-msgstr "Configuració d'usuari inicial"
-
-msgctxt "selection:subscription.subscription,model_source:"
-msgid "User Warning"
-msgstr ""
-
-msgctxt "selection:subscription.subscription,model_source:"
-msgid "View"
-msgstr "Vista"
-
-#, fuzzy
-msgctxt "selection:subscription.subscription,model_source:"
-msgid "View Tree Expanded State"
-msgstr "Estat de vista d'arbre expandit"
-
-msgctxt "selection:subscription.subscription,model_source:"
-msgid "View Tree Width"
-msgstr ""
-
-msgctxt "selection:subscription.subscription,model_source:"
-msgid "View shortcut"
-msgstr ""
+msgstr "Setmanes"
 
 msgctxt "selection:subscription.subscription,state:"
 msgid "Done"
-msgstr "Fet"
+msgstr "Tanca"
 
 msgctxt "selection:subscription.subscription,state:"
 msgid "Draft"
@@ -874,11 +295,15 @@ msgstr "Esborrany"
 
 msgctxt "selection:subscription.subscription,state:"
 msgid "Running"
-msgstr ""
+msgstr "En execució"
 
 msgctxt "view:subscription.history:"
 msgid "Subscription History"
 msgstr "Historial de subscripció"
+
+msgctxt "view:subscription.history:"
+msgid "Time"
+msgstr "Hora"
 
 msgctxt "view:subscription.line:"
 msgid "Field"
@@ -910,7 +335,7 @@ msgstr "Processa"
 
 msgctxt "view:subscription.subscription:"
 msgid "Set to Draft"
-msgstr "Estableix a esborrany"
+msgstr "A borrador"
 
 msgctxt "view:subscription.subscription:"
 msgid "Stop"
@@ -926,4 +351,8 @@ msgstr "Subscripcions"
 
 msgctxt "view:subscription.subscription:"
 msgid "Subsription Data"
-msgstr "Dat de subscripció"
+msgstr "Data subscripció"
+
+msgctxt "view:subscription.subscription:"
+msgid "Time"
+msgstr "Hora"
