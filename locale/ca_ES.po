@@ -28,11 +28,11 @@ msgstr "El nom de la subscripció ha de ser únic!"
 
 msgctxt "field:subscription.history,create_date:"
 msgid "Create Date"
-msgstr "Data de creació"
+msgstr "Data creació"
 
 msgctxt "field:subscription.history,create_uid:"
 msgid "Create User"
-msgstr "Usuari de creació"
+msgstr "Usuari creació"
 
 msgctxt "field:subscription.history,date:"
 msgid "Date"
@@ -68,11 +68,11 @@ msgstr "Usuari d'escriptura"
 
 msgctxt "field:subscription.line,create_date:"
 msgid "Create Date"
-msgstr "Data de creació"
+msgstr "Data creació"
 
 msgctxt "field:subscription.line,create_uid:"
 msgid "Create User"
-msgstr "Usuari de creació"
+msgstr "Usuari creació"
 
 msgctxt "field:subscription.line,field:"
 msgid "Field"
@@ -108,11 +108,11 @@ msgstr "Actiu"
 
 msgctxt "field:subscription.subscription,create_date:"
 msgid "Create Date"
-msgstr "Data de creació"
+msgstr "Data creació"
 
 msgctxt "field:subscription.subscription,create_uid:"
 msgid "Create User"
-msgstr "Usuari de creació"
+msgstr "Usuari creació"
 
 msgctxt "field:subscription.subscription,cron:"
 msgid "Cron Job"
@@ -319,7 +319,7 @@ msgstr "Valor"
 
 msgctxt "view:subscription.subscription:"
 msgid "Computed Fields"
-msgstr "Camps calculats"
+msgstr "Calcular camps"
 
 msgctxt "view:subscription.subscription:"
 msgid "History"
@@ -339,7 +339,7 @@ msgstr "A borrador"
 
 msgctxt "view:subscription.subscription:"
 msgid "Stop"
-msgstr "Atura"
+msgstr "Parar"
 
 msgctxt "view:subscription.subscription:"
 msgid "Subscription"

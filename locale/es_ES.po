@@ -28,11 +28,11 @@ msgstr "¡El nombre de la subscripción debe ser única!"
 
 msgctxt "field:subscription.history,create_date:"
 msgid "Create Date"
-msgstr "Fecha de creación"
+msgstr "Fecha creación"
 
 msgctxt "field:subscription.history,create_uid:"
 msgid "Create User"
-msgstr "Usuario de creación"
+msgstr "Usuario creación"
 
 msgctxt "field:subscription.history,date:"
 msgid "Date"
@@ -60,19 +60,19 @@ msgstr "Subscripción"
 
 msgctxt "field:subscription.history,write_date:"
 msgid "Write Date"
-msgstr "Fecha de escritura"
+msgstr "Fecha modificación"
 
 msgctxt "field:subscription.history,write_uid:"
 msgid "Write User"
-msgstr "Usuario de escritura"
+msgstr "Usuario modificación"
 
 msgctxt "field:subscription.line,create_date:"
 msgid "Create Date"
-msgstr "Fecha de creación"
+msgstr "Fecha creación"
 
 msgctxt "field:subscription.line,create_uid:"
 msgid "Create User"
-msgstr "Usuario de creación"
+msgstr "Usuario creación"
 
 msgctxt "field:subscription.line,field:"
 msgid "Field"
@@ -96,11 +96,11 @@ msgstr "Valor por defecto"
 
 msgctxt "field:subscription.line,write_date:"
 msgid "Write Date"
-msgstr "Fecha de escritura"
+msgstr "Fecha modificación"
 
 msgctxt "field:subscription.line,write_uid:"
 msgid "Write User"
-msgstr "Usuario de escritura"
+msgstr "Usuario modificación"
 
 msgctxt "field:subscription.subscription,active:"
 msgid "Active"
@@ -108,11 +108,11 @@ msgstr "Activo"
 
 msgctxt "field:subscription.subscription,create_date:"
 msgid "Create Date"
-msgstr "Fecha de creación"
+msgstr "Fecha creación"
 
 msgctxt "field:subscription.subscription,create_uid:"
 msgid "Create User"
-msgstr "Usuario de creación"
+msgstr "Usuario creación"
 
 msgctxt "field:subscription.subscription,cron:"
 msgid "Cron Job"
@@ -180,11 +180,11 @@ msgstr "Usuario"
 
 msgctxt "field:subscription.subscription,write_date:"
 msgid "Write Date"
-msgstr "Fecha de escritura"
+msgstr "Fecha modificación"
 
 msgctxt "field:subscription.subscription,write_uid:"
 msgid "Write User"
-msgstr "Usuario de escritura"
+msgstr "Usuario modificación"
 
 msgctxt "help:subscription.line,value:"
 msgid ""
@@ -320,7 +320,7 @@ msgstr "Valor"
 
 msgctxt "view:subscription.subscription:"
 msgid "Computed Fields"
-msgstr "Campos calculados"
+msgstr "Calcular campos"
 
 msgctxt "view:subscription.subscription:"
 msgid "History"
@@ -328,7 +328,7 @@ msgstr "Historial"
 
 msgctxt "view:subscription.subscription:"
 msgid "Notes"
-msgstr "Observaciones"
+msgstr "Notas"
 
 msgctxt "view:subscription.subscription:"
 msgid "Process"
@@ -340,7 +340,7 @@ msgstr "A borrador"
 
 msgctxt "view:subscription.subscription:"
 msgid "Stop"
-msgstr "Atura"
+msgstr "Parar"
 
 msgctxt "view:subscription.subscription:"
 msgid "Subscription"
