@@ -4,7 +4,7 @@
 from datetime import datetime
 from simpleeval import simple_eval
 from trytond.config import config
-from trytond.model import ModelView, ModelSQL, fields
+from trytond.model import ModelView, ModelSQL, fields, Unique
 from trytond.pool import Pool
 from trytond.pyson import Eval
 from trytond.transaction import Transaction
@@ -77,6 +77,7 @@ class SubscriptionSubscription(ModelSQL, ModelView):
     @classmethod
     def __setup__(cls):
         super(SubscriptionSubscription, cls).__setup__()
+        t = cls.__table__()
         cls._buttons.update({
             'set_process': {
                 'invisible': Eval('state') != 'draft',
@@ -96,8 +97,8 @@ class SubscriptionSubscription(ModelSQL, ModelView):
             'created_successfully': 'Document \'%s\' created successfully',
             })
         cls._sql_constraints = [
-            ('name_unique', 'UNIQUE(name)',
-             'The name of the subscription must be unique!')
+            ('name_unique', Unique(t, t.name),
+                'The name of the subscription must be unique!')
         ]
 
     @staticmethod
